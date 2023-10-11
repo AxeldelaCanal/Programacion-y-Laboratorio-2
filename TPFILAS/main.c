@@ -21,6 +21,7 @@ void cargaFila(Fila* fila);
 void muestraFila(Fila* fila);
 void liberarFila(Fila* fila);
 int buscaDato(Fila* fila, int datoBuscado);
+void crearArchivoTexto(Fila* fila);
 
 
 
@@ -43,6 +44,8 @@ int main()
     int ocurrencias = buscaDato(&fila, datoBuscado);
 
     printf("\nEl dato %d aparece %d veces en la fila.\n", datoBuscado, ocurrencias);
+
+    //crearArchivoTexto(&fila);
 
     liberarFila(&fila);
 
@@ -147,4 +150,31 @@ int buscaDato(Fila* fila, int datoBuscado)
     return ocurrencias;
 }
 
+///PUNTO 4
+void crearArchivoTexto(Fila* fila)
+{
+    char nombreArchivo[100];
+
+    printf("Ingrese el nombre del archivo de texto: ");
+    scanf("%s", nombreArchivo);
+
+    FILE* archivo = fopen(nombreArchivo, "w");
+
+    if (archivo == NULL)
+    {
+        printf("No se pudo abrir el archivo.\n");
+        return;
+    }
+
+    Nodo* actual = fila->frente;
+
+    while (actual != NULL)
+    {
+        fprintf(archivo, "%d\n", actual->dato);
+        actual = actual->siguiente;
+    }
+
+    fclose(archivo);
+    printf("Contenido de la fila guardado en el archivo \"%s\".\n", nombreArchivo);
+}
 
