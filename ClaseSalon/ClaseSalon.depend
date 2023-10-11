@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1693512172 source:c:\users\axelu\onedrive\escritorio\programacion y laboratorio 2\clasesalon\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+

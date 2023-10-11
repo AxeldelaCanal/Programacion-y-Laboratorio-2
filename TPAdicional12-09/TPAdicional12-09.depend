@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1694825226 source:c:\users\gc\onedrive\escritorio\programacion y laboratorio 2\tpadicional12-09\main.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<string.h>
+

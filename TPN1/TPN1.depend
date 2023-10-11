@@ -1,0 +1,24 @@
+# depslib dependency file v1.0
+1692129883 source:c:\users\gc\onedrive\escritorio\programacion y laboratorio 2\tpn1\main.c
+	"FuncionesYPunteros.h"
+
+1692129863 source:c:\users\gc\onedrive\escritorio\programacion y laboratorio 2\tpn1\funcionesypunteros.c
+	<stdio.h>
+	<stdlib.h>
+
+1692129863 c:\users\gc\onedrive\escritorio\programacion y laboratorio 2\tpn1\funcionesypunteros.h
+
+1692128561 c:\users\gc\onedrive\escritorio\programacion y laboratorio 2\tpn1\funcionesypunteros.c
+	<stdio.h>
+	<stdlib.h>
+
+1692212958 source:c:\users\axelu\onedrive\escritorio\programacion y laboratorio 2\tpn1\funcionesypunteros.c
+	<stdio.h>
+	<stdlib.h>
+	"FuncionesYPunteros.h"
+
+1692213050 source:c:\users\axelu\onedrive\escritorio\programacion y laboratorio 2\tpn1\main.c
+	"FuncionesYPunteros.h"
+
+1692213050 c:\users\axelu\onedrive\escritorio\programacion y laboratorio 2\tpn1\funcionesypunteros.h
+

@@ -1,0 +1,11 @@
+# depslib dependency file v1.0
+1692234471 source:c:\users\gc\onedrive\escritorio\programacion y laboratorio 2\tp adicional\tpadicional\main.c
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+
+1692302827 source:c:\users\axelu\onedrive\escritorio\programacion y laboratorio 2\tp adicional punteros\main.c
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+

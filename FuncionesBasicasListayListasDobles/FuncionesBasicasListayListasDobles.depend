@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1694730246 source:c:\users\gc\onedrive\escritorio\programacion y laboratorio 2\funcionesbasicaslistaylistasdobles\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
