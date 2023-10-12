@@ -345,7 +345,6 @@ nodoArbol* buscarNombre(nodoArbol* arbol, char nombreBuscado[])
     return NULL;
 }
 
-
 void nombreEncontrado(nodoArbol* nodoBuscadoNombre)
 {
     if(nodoBuscadoNombre != NULL)
@@ -448,7 +447,6 @@ nodoArbol* borrarNodo(nodoArbol* arbol, int legajo)
 
     return arbol;
 }
-
 
 nodoArbol* encotrarSucesorInorden(nodoArbol* arbol)
 {
