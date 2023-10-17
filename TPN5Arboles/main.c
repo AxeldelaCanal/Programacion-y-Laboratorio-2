@@ -54,6 +54,7 @@ int main()
     nodoArbol* arbol;
     arbol = inicArbol();
 
+
     ///PUNTO 1:
     arbol = ingresarNuevoNodo(arbol);
 
