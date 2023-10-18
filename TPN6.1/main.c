@@ -44,9 +44,11 @@ int main()
     celda arreglo[100];  // Tamaño máximo del arreglo
     int validos = 0;
 
-    //cargarArchivo();
+    cargarArchivo();
     pasarDeArchivoToADL(arreglo, &validos);
     mostrarArchivoArreglo(arreglo, validos);
+
+    pasarDeADLToArchivoDeAprobados(arreglo, validos);
 
     return 0;
 }
@@ -279,5 +281,38 @@ void mostrarArchivoArreglo(celda arreglo[], int validos)
     }
 }
 
+void pasarDeADLToArchivoDeAprobados(celda arreglo[], int validos)
+{
+    FILE *ptr = fopen("archivoAprobados.txt", "w");
+
+    if (ptr != NULL)
+    {
+        printf("----------------------------APROBADOS:----------------------------\n");
+
+        for (int i = 0; i < validos; i++)
+        {
+            printf("MATERIA: %s\n", arreglo[i].materia);
+            printf("ID Materia: %d\n", arreglo[i].idMateria);
+
+            nodo *actual = arreglo[i].listaDeNotas;
+
+            while (actual != NULL)
+            {
+                if (actual->dato.nota >= 6)
+                {
+                    printf("Legajo: %d, Nombre y Apellido: %s, NOTAS: %d\n", actual->dato.legajo, actual->dato.nombreApe, actual->dato.nota);
+                    fwrite(&(actual->dato), sizeof(registroArchivo), 1, ptr);
+                }
+                actual = actual->siguiente;
+            }
+            printf("-------------------------------------------\n");
+        }
+        fclose(ptr);
+    }
+    else
+    {
+        printf("ERROR: No se pudo abrir el archivo de aprobados.");
+    }
+}
 
 
