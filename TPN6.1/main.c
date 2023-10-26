@@ -36,6 +36,15 @@ registroArchivo cargarRegistro();
 void cargarArchivo();
 void mostrarRegistro(registroArchivo nuevoRegistro);
 void mostrarArchivo();
+nodo* crearNodo(int nota, int legajo, char nombreApe[]);
+int buscarPosMateria(celda arreglo[], char materia[], int validos);
+int agregarMateria(celda arreglo[], char materia[], int validos);
+nodo* agregarAlPrincipio(nodo* lista, nodo* nuevoNodo);
+int cargarEnArreglo(celda arreglo[], char materia[], int nota, int legajo, char nombreApe[], int validos);
+void mostrarNotasPorMateria(celda arreglo[], int validos, char materia[]);
+void pasarDeArchivoToADL(celda arreglo[], int *validos);
+void mostrarArchivoArreglo(celda arreglo[], int validos);
+void pasarDeADLToArchivoDeAprobados(celda arreglo[], int validos);
 
 
 
@@ -231,7 +240,6 @@ void mostrarNotasPorMateria(celda arreglo[], int validos, char materia[])
     }
 }
 
-
 ///… pasarDeArchivoToADL(…) ---> esta función recorrerá el archivo y pasará la información al arreglo de listas
 ///(utilizando las funciones necesarias que usted ya codificó).
 void pasarDeArchivoToADL(celda arreglo[], int *validos)
@@ -252,7 +260,6 @@ void pasarDeArchivoToADL(celda arreglo[], int *validos)
         printf("ERROR: No se pudo abrir el archivo.");
     }
 }
-
 
 void mostrarArchivoArreglo(celda arreglo[], int validos)
 {
