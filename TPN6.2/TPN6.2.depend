@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1698346550 source:c:\users\axelu\onedrive\escritorio\programacion y laboratorio 2\tpn6.2\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+

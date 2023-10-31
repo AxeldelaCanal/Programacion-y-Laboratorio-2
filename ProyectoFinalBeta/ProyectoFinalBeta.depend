@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1698763511 source:c:\users\axelu\onedrive\escritorio\proyectofinalbeta\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<windows.h>
+
