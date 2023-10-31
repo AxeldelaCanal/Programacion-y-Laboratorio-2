@@ -1,7 +1,0 @@
-# depslib dependency file v1.0
-1698710976 source:c:\users\gc\onedrive\escritorio\programacion y laboratorio 2\proyectofinal1\main.c
-	<stdio.h>
-	<stdlib.h>
-	<string.h>
-	<windows.h>
-

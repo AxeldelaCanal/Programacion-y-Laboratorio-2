@@ -1,4 +1,0 @@
-Paciente,35123123,de la Canal Natasha,28,Alvarado 7600,2235123123
-Ingreso,1,2023-10-30,2023-12-15,35123123,1234
-Paciente,41149249,de la Canal Axel,25,Coronel Suarez 3056,2235304242
-Ingreso,2,2023-10-30,2023-12-31,41149249,1234
