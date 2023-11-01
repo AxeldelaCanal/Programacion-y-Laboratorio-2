@@ -28,7 +28,6 @@ typedef struct Paciente
 } Paciente;
 
 // Prototipos de funciones
-
 ///PROTOTIPADOS PACIENTE:
 Paciente *crearPaciente(char *ApellidoNombre, int Edad, int Dni, char *Direccion, char *Telefono);
 Paciente *buscarPaciente(Paciente *raiz, int dni);
@@ -58,6 +57,12 @@ void eliminarIngresoMenu(Paciente *raiz);
 void mostrarPacienteYIngresos(Paciente *raiz, int dniPaciente);
 void mostrarIngresos(IngresoLaboratorio *ingresos);
 void mostrarTodosLosPacientesYIngresos(Paciente *raiz);
+
+///PROTOTIPADOS ARCHIVO:
+void guardarDatosEnArchivo(Paciente *raiz);
+void guardarPacientesEnArchivo(FILE *archivo, Paciente *raiz);
+void guardarIngresosEnArchivo(FILE *archivo, IngresoLaboratorio *ingresos);
+void cargarDatosDesdeArchivo(Paciente **raiz);
 
 
 int anchoConsola;
@@ -134,25 +139,25 @@ int main()
         {
         case 1:
             agregarPacienteMenu(&raiz);
-            guardarDatosEnArchivo(*raiz);
+            guardarDatosEnArchivo(&raiz);
             break;
         case 2:
             modificarPacienteMenu(raiz);
-            guardarDatosEnArchivo(*raiz);
+            guardarDatosEnArchivo(&raiz);
             break;
         case 3:
             printf("Ingrese el DNI del paciente a eliminar: ");
             scanf("%d", &dniAEliminar);
             eliminarPaciente(raiz, dniAEliminar);
-            guardarDatosEnArchivo(raiz);
+            guardarDatosEnArchivo(&raiz);
             break;
         case 4:
             agregarIngresoMenu(raiz);
-            guardarDatosEnArchivo(*raiz);
+            guardarDatosEnArchivo(&raiz);
             break;
         case 5:
             modificarIngresoMenu(raiz);
-            guardarDatosEnArchivo(*raiz);
+            guardarDatosEnArchivo(&raiz);
             break;
         case 6:
             eliminarIngresoMenu(raiz);
@@ -454,7 +459,7 @@ void eliminarPaciente(Paciente *raiz, int dni)
         {
             bajaPaciente(raiz, dni); // Marca el paciente como eliminado
             printf("El paciente ha sido eliminado correctamente.\n");
-            guardarDatosEnArchivo(*raiz); // Guarda los cambios en el archivo
+            guardarDatosEnArchivo(&raiz); // Guarda los cambios en el archivo
         }
         else
         {
@@ -621,7 +626,7 @@ void mostrarTodosLosPacientesYIngresos(Paciente *raiz)
     }
 }
 
-///FUNCIONES ARCHIVO:
+///------------------------- FUNCIONES ARCHIVO -------------------------
 // Función para guardar los datos de pacientes e ingresos en un archivo
 void guardarDatosEnArchivo(Paciente *raiz)
 {
