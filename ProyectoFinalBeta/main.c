@@ -94,6 +94,9 @@ int main()
     int dniAEliminar;
     int opcion;
 
+    char fechaDesde[11];
+    char fechaHasta[11];  // Variables para el rango de fechas
+
     do
     {
         system("cls");
@@ -121,7 +124,9 @@ int main()
         fila++;
         centrarTextoAuto("8. Mostrar todos los Pacientes e Ingresos", fila);
         fila++;
-        centrarTextoAuto("9. Salir", fila);
+        centrarTextoAuto("9. Filtrar ingresos por fecha", fila);  // Nueva opción para filtrar por fecha
+        fila++;
+        centrarTextoAuto("10. Salir", fila);
         fila++;
 
         centrarTextoAuto("Seleccione una opcion: \n", fila);
@@ -163,15 +168,19 @@ int main()
             eliminarIngresoMenu(raiz);
             break;
         case 7:
-            printf("Ingrese el DNI del paciente a mostrar: ");
-            scanf("%d", &dniMostrar);
-            mostrarPacienteYIngresos(raiz, dniMostrar);
+            mostrarPacienteYIngresosConFiltrado(raiz);
             break;
         case 8:
             mostrarTodosLosPacientesYIngresos(raiz);
-
             break;
         case 9:
+            printf("Ingrese la fecha de inicio (YYYY-MM-DD): ");
+            scanf("%s", fechaDesde);
+            printf("Ingrese la fecha de fin (YYYY-MM-DD): ");
+            scanf("%s", fechaHasta);
+            mostrarIngresosEnRangoYDatosPacienteMenu(raiz, fechaDesde, fechaHasta);
+            break;
+        case 10:
             printf("Saliendo del programa...\n");
             break;
         default:
@@ -179,7 +188,7 @@ int main()
         }
         system("pause");
     }
-    while (opcion != 9);
+    while (opcion != 10);
     guardarDatosEnArchivo(raiz);
 
     return 0;
@@ -221,6 +230,29 @@ Paciente *buscarPaciente(Paciente *raiz, int dni)
     else
     {
         return buscarPaciente(raiz->derecha, dni);
+    }
+}
+
+// Funcion para buscar un paciente por numero de ingreso
+Paciente *buscarPacientePorNumeroIngreso(Paciente *raiz, int numeroIngreso)
+{
+    if (raiz == NULL)
+    {
+        return NULL; // No se encontró el paciente
+    }
+
+    // Recursivamente, busca en el lado izquierdo y derecho del árbol
+    if (numeroIngreso == raiz->ingresos->NroIngreso)
+    {
+        return raiz; // Se encontró el paciente con el número de ingreso
+    }
+    else if (numeroIngreso > raiz->ingresos->NroIngreso)
+    {
+        return buscarPacientePorNumeroIngreso(raiz->izquierda, numeroIngreso);
+    }
+    else
+    {
+        return buscarPacientePorNumeroIngreso(raiz->derecha, numeroIngreso);
     }
 }
 
@@ -291,6 +323,30 @@ IngresoLaboratorio *crearIngreso(int NroIngreso, char *FechaIngreso, char *Fecha
     nuevoIngreso->Eliminado = 0;
 
     return nuevoIngreso;
+}
+
+void mostrarIngresosPorNumero(IngresoLaboratorio *ingresos, int numeroIngreso)
+{
+    IngresoLaboratorio *actual = ingresos;
+    int encontrados = 0;
+
+    while (actual != NULL)
+    {
+        if (!actual->Eliminado && actual->NroIngreso == numeroIngreso)
+        {
+            encontrados++;
+            printf("Número de Ingreso: %d\n", actual->NroIngreso);
+            printf("Fecha de Ingreso: %s\n", actual->FechaIngreso);
+            printf("Fecha de Retiro: %s\n", actual->FechaRetiro);
+            printf("Matrícula Profesional: %d\n\n", actual->MatriculaProfesional);
+        }
+        actual = actual->siguiente;
+    }
+
+    if (encontrados == 0)
+    {
+        printf("No se encontraron ingresos con el número especificado.\n");
+    }
 }
 
 void agregarIngreso(Paciente *paciente, IngresoLaboratorio *ingreso)
@@ -375,7 +431,6 @@ void bajaIngreso(Paciente *raiz, int dniPaciente, int nroIngreso)
         printf("El paciente con DNI %d no existe.\n", dniPaciente);
     }
 }
-
 
 ///------------------------- FUNCIONES PACIENTE MENU -------------------------
 void agregarPacienteMenu(Paciente **raiz)
@@ -565,6 +620,42 @@ void eliminarIngresoMenu(Paciente *raiz)
     // Verificar si se eliminó el ingreso correctamente o no y mostrar un mensaje apropiado
 }
 
+void mostrarIngresosEnRangoYDatosPacienteMenu(Paciente *raiz, char *fechaDesde, char *fechaHasta)
+{
+    if (raiz == NULL)
+    {
+        return;
+    }
+
+    if (!raiz->Eliminado)
+    {
+        IngresoLaboratorio *actual = raiz->ingresos;
+        while (actual != NULL)
+        {
+            if (!actual->Eliminado)
+            {
+                // Verificar si la fecha de ingreso está dentro del rango
+                if (strcmp(actual->FechaIngreso, fechaDesde) >= 0 && strcmp(actual->FechaIngreso, fechaHasta) <= 0)
+                {
+                    // Mostrar los datos del paciente e ingreso
+                    printf("\nDNI: %d\n", raiz->Dni);
+                    printf("Nombre: %s\n", raiz->ApellidoNombre);
+                    printf("Edad: %d\n", raiz->Edad);
+                    printf("Direccion: %s\n", raiz->Direccion);
+                    printf("Telefono: %s\n", raiz->Telefono);
+                    printf("Numero de Ingreso: %d\n", actual->NroIngreso);
+                    printf("Fecha de Ingreso: %s\n", actual->FechaIngreso);
+                    printf("Fecha de Retiro: %s\n", actual->FechaRetiro);
+                    printf("Matricula Profesional: %d\n\n", actual->MatriculaProfesional);
+                }
+            }
+            actual = actual->siguiente;
+        }
+    }
+
+    mostrarIngresosEnRangoYDatosPacienteMenu(raiz->izquierda, fechaDesde, fechaHasta);
+    mostrarIngresosEnRangoYDatosPacienteMenu(raiz->derecha, fechaDesde, fechaHasta);
+}
 
 ///------------------------- FUNCIONES TEMP -------------------------
 // Función para mostrar la información de un paciente y sus ingresos
@@ -573,7 +664,7 @@ void mostrarPacienteYIngresos(Paciente *raiz, int dniPaciente)
     Paciente *paciente = buscarPaciente(raiz, dniPaciente);
     if (paciente != NULL && !paciente->Eliminado)
     {
-        printf("DNI: %d\n", paciente->Dni);
+        printf("\nDNI: %d\n", paciente->Dni);
         printf("Nombre: %s\n", paciente->ApellidoNombre);
         printf("Edad: %d\n", paciente->Edad);
         printf("Direccion: %s\n", paciente->Direccion);
@@ -585,6 +676,110 @@ void mostrarPacienteYIngresos(Paciente *raiz, int dniPaciente)
     else
     {
         printf("El paciente con DNI %d no existe o está eliminado.\n", dniPaciente);
+    }
+}
+
+// Función para mostrar información de un paciente y sus ingresos filtrados por número de ingreso
+void mostrarPacienteYIngresosPorNumeroIngreso(Paciente *raiz, int numeroIngreso)
+{
+    Paciente *paciente = buscarPacientePorNumeroIngreso(raiz, numeroIngreso);
+    if (paciente != NULL && !paciente->Eliminado)
+    {
+        printf("\nDNI: %d\n", paciente->Dni);
+        printf("Nombre: %s\n", paciente->ApellidoNombre);
+        printf("Edad: %d\n", paciente->Edad);
+        printf("Direccion: %s\n", paciente->Direccion);
+        printf("Telefono: %s\n", paciente->Telefono);
+
+        printf("INGRESO:\n");
+        mostrarIngresosPorNumero(paciente->ingresos, numeroIngreso);
+    }
+    else
+    {
+        printf("No se encontró un paciente con ingreso número %d o está eliminado.\n", numeroIngreso);
+    }
+}
+
+
+// Función para mostrar la información de un paciente y sus ingresos filtrados por fecha de ingreso
+void mostrarPacienteYIngresosPorFecha(Paciente *raiz, char *fechaDesde)
+{
+    if (raiz == NULL)
+    {
+        return;
+    }
+
+    if (!raiz->Eliminado)
+    {
+        IngresoLaboratorio *actual = raiz->ingresos;
+        while (actual != NULL)
+        {
+            if (!actual->Eliminado)
+            {
+                // Verificar si la fecha de ingreso está dentro del rango
+                if (strcmp(actual->FechaIngreso, fechaDesde) == 0)
+                {
+                    // Mostrar los datos del paciente e ingreso
+                    printf("\nDNI: %d\n", raiz->Dni);
+                    printf("Nombre: %s\n", raiz->ApellidoNombre);
+                    printf("Edad: %d\n", raiz->Edad);
+                    printf("Direccion: %s\n", raiz->Direccion);
+                    printf("Telefono: %s\n", raiz->Telefono);
+                    printf("Numero de Ingreso: %d\n", actual->NroIngreso);
+                    printf("Fecha de Ingreso: %s\n", actual->FechaIngreso);
+                    printf("Fecha de Retiro: %s\n", actual->FechaRetiro);
+                    printf("Matricula Profesional: %d\n\n", actual->MatriculaProfesional);
+                }
+            }
+            actual = actual->siguiente;
+        }
+    }
+
+    mostrarPacienteYIngresosPorFecha(raiz->izquierda, fechaDesde);
+    mostrarPacienteYIngresosPorFecha(raiz->derecha, fechaDesde);
+}
+
+// Función para mostrar la información de un paciente y sus ingresos con opciones de filtrado
+void mostrarPacienteYIngresosConFiltrado(Paciente *raiz)
+{
+    char fechaDesde[11];
+    int dniFiltrar;
+    int numeroIngreso = 0;
+
+    printf("Seleccione una opcion de filtrado:\n");
+    printf("1. Filtrar por DNI\n");
+    printf("2. Filtrar por número de ingreso\n");
+    printf("3. Filtrar por fecha de ingreso\n");
+
+    int opcionFiltrado;
+    scanf("%d", &opcionFiltrado);
+
+    system("cls");
+    switch (opcionFiltrado)
+    {
+    case 1:
+        // Filtrar por DNI
+        printf("Ingrese el DNI a filtrar: ");
+        scanf("%d", &dniFiltrar);
+        system("cls");
+        mostrarPacienteYIngresos(raiz, dniFiltrar);
+        break;
+    case 2:
+        // Filtrar por número de ingreso
+        printf("Ingrese el número de ingreso a filtrar: ");
+        scanf("%d", &numeroIngreso);
+        system("cls");
+        mostrarPacienteYIngresosPorNumeroIngreso(raiz, numeroIngreso);
+        break;
+    case 3:
+        // Filtrar por fecha de ingreso
+        printf("Ingrese la fecha de inicio (YYYY-MM-DD): ");
+        scanf("%s", &fechaDesde);
+        system("cls");
+        mostrarPacienteYIngresosPorFecha(raiz,fechaDesde);
+        break;
+    default:
+        printf("Opción de filtrado no válida.\n");
     }
 }
 
@@ -716,3 +911,4 @@ void cargarDatosDesdeArchivo(Paciente **raiz)
 
     fclose(archivo);
 }
+
