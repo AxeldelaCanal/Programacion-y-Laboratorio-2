@@ -27,6 +27,13 @@ typedef struct Paciente
     IngresoLaboratorio *ingresos; // Apuntador al primer ingreso en la lista de ingresos
 } Paciente;
 
+// Estructura para la lista ordenada
+typedef struct NodoLista
+{
+    Paciente *paciente;
+    struct NodoLista *siguiente;
+} NodoLista;
+
 // Prototipos de funciones
 ///PROTOTIPADOS PACIENTE:
 Paciente *crearPaciente(char *ApellidoNombre, int Edad, int Dni, char *Direccion, char *Telefono);
@@ -66,6 +73,8 @@ void cargarDatosDesdeArchivo(Paciente **raiz);
 
 
 int anchoConsola;
+int ingresoEncontrado = 0;
+
 // Función para centrar el texto en la consola automáticamente
 void centrarTextoAuto(const char *texto, int y)
 {
@@ -89,9 +98,10 @@ void centrarTextoAuto(const char *texto, int y)
 int main()
 {
     Paciente *raiz = NULL; // Declaración de la raíz del árbol
-    cargarDatosDesdeArchivo(&raiz); // Cargar datos almacenados previamente
+    cargarDatosDesdeArchivoMejorado(&raiz); // Cargar datos almacenados previamente
     int dniMostrar;
     int dniAEliminar;
+    int dniConsulta;
     int opcion;
 
     char fechaDesde[11];
@@ -126,7 +136,13 @@ int main()
         fila++;
         centrarTextoAuto("9. Filtrar ingresos por fecha", fila);  // Nueva opción para filtrar por fecha
         fila++;
-        centrarTextoAuto("10. Salir", fila);
+        centrarTextoAuto("10. Mostrar un Paciente", fila); // Nueva opcion para mostrar un paciente.
+        fila++;
+        centrarTextoAuto("11. Todos los Ingresos por Paciente", fila);
+        fila++;
+        centrarTextoAuto("12. Consultar un Ingreso", fila); // Nueva funcion para mostrar un ingreso.
+        fila++;
+        centrarTextoAuto("13. Salir", fila);
         fila++;
 
         centrarTextoAuto("Seleccione una opcion: \n", fila);
@@ -181,6 +197,30 @@ int main()
             mostrarIngresosEnRangoYDatosPacienteMenu(raiz, fechaDesde, fechaHasta);
             break;
         case 10:
+            printf("Ingrese el DNI del paciente a consultar: ");
+            scanf("%d", &dniConsulta);
+            consultarPacientePorDNI(raiz, dniConsulta);
+            break;
+        case 11:
+            listarIngresosPorPaciente(raiz);
+            break;
+        case 12:
+            printf("Ingrese el Número de Ingreso (0 para buscar por fecha): ");
+            int nroIngreso;
+            char fechaIngreso[11];
+            scanf("%d", &nroIngreso);
+            if (nroIngreso == 0)
+            {
+                printf("Ingrese la Fecha de Ingreso (YYYY-MM-DD): ");
+                scanf("%s", fechaIngreso);
+                consultarIngreso(raiz, 0, fechaIngreso);
+            }
+            else
+            {
+                consultarIngreso(raiz, nroIngreso, "");
+            }
+            break;
+        case 13:
             printf("Saliendo del programa...\n");
             break;
         default:
@@ -188,7 +228,7 @@ int main()
         }
         system("pause");
     }
-    while (opcion != 10);
+    while (opcion != 13);
     guardarDatosEnArchivo(raiz);
 
     return 0;
@@ -307,6 +347,55 @@ void bajaPaciente(Paciente *raiz, int dni)
             free(ingreso); // Libera la memoria del ingreso
         }
         paciente->Eliminado = 1;
+    }
+}
+
+// Función para insertar en lista ordenada
+void insertarOrdenado(NodoLista **cabeza, Paciente *paciente)
+{
+    NodoLista *nuevoNodo = (NodoLista *)malloc(sizeof(NodoLista));
+    nuevoNodo->paciente = paciente;
+    nuevoNodo->siguiente = NULL;
+
+    // Insertar en la posición correcta
+    if (*cabeza == NULL || strcmp((*cabeza)->paciente->ApellidoNombre, paciente->ApellidoNombre) > 0)
+    {
+        nuevoNodo->siguiente = *cabeza;
+        *cabeza = nuevoNodo;
+    }
+    else
+    {
+        NodoLista *actual = *cabeza;
+        while (actual->siguiente != NULL && strcmp(actual->siguiente->paciente->ApellidoNombre, paciente->ApellidoNombre) < 0)
+        {
+            actual = actual->siguiente;
+        }
+        nuevoNodo->siguiente = actual->siguiente;
+        actual->siguiente = nuevoNodo;
+    }
+}
+
+// Función para recorrer el árbol y llenar la lista
+void recorrerYOrdenar(Paciente *raiz, NodoLista **listaOrdenada)
+{
+    if (raiz != NULL)
+    {
+        recorrerYOrdenar(raiz->izquierda, listaOrdenada);
+        if (!raiz->Eliminado)
+        {
+            insertarOrdenado(listaOrdenada, raiz);
+        }
+        recorrerYOrdenar(raiz->derecha, listaOrdenada);
+    }
+}
+
+// Función para mostrar pacientes e ingresos desde una lista
+void mostrarPacientesEIngresosOrdenados(NodoLista *lista)
+{
+    while (lista != NULL)
+    {
+        mostrarPacienteYIngresos(lista->paciente, lista->paciente->Dni);
+        lista = lista->siguiente;
     }
 }
 
@@ -432,6 +521,41 @@ void bajaIngreso(Paciente *raiz, int dniPaciente, int nroIngreso)
     }
 }
 
+// Función auxiliar para realizar la búsqueda
+void buscarYVerificacionIngreso(Paciente *raiz, int nroIngreso, const char *fechaIngreso)
+{
+    if (raiz == NULL || ingresoEncontrado)
+    {
+        return;
+    }
+
+    // Búsqueda en el subárbol izquierdo
+    buscarYVerificacionIngreso(raiz->izquierda, nroIngreso, fechaIngreso);
+
+    if (!raiz->Eliminado)
+    {
+        IngresoLaboratorio *actual = raiz->ingresos;
+        while (actual != NULL)
+        {
+            if (!actual->Eliminado && (actual->NroIngreso == nroIngreso || (fechaIngreso[0] != '\0' && strcmp(actual->FechaIngreso, fechaIngreso) == 0)))
+            {
+                printf("\nDetalle del Ingreso:\n");
+                printf("Paciente DNI: %d, Nombre: %s\n", raiz->Dni, raiz->ApellidoNombre);
+                printf("Número de Ingreso: %d\n", actual->NroIngreso);
+                printf("Fecha de Ingreso: %s\n", actual->FechaIngreso);
+                printf("Fecha de Retiro: %s\n", actual->FechaRetiro);
+                printf("Resultados Obtenidos: Resultados no cargados\n");
+                ingresoEncontrado = 1; // Marcar como encontrado
+                return;
+            }
+            actual = actual->siguiente;
+        }
+    }
+
+    // Búsqueda en el subárbol derecho
+    buscarYVerificacionIngreso(raiz->derecha, nroIngreso, fechaIngreso);
+}
+
 ///------------------------- FUNCIONES PACIENTE MENU -------------------------
 void agregarPacienteMenu(Paciente **raiz)
 {
@@ -527,6 +651,59 @@ void eliminarPaciente(Paciente *raiz, int dni)
     }
 }
 
+// Función para consultar un paciente por DNI
+void consultarPacientePorDNI(Paciente *raiz, int dni)
+{
+    Paciente *pacienteEncontrado = buscarPaciente(raiz, dni);
+    if (pacienteEncontrado != NULL && !pacienteEncontrado->Eliminado)
+    {
+        printf("\nInformacion del Paciente:\n");
+        printf("DNI: %d\n", pacienteEncontrado->Dni);
+        printf("Nombre: %s\n", pacienteEncontrado->ApellidoNombre);
+        printf("Edad: %d\n", pacienteEncontrado->Edad);
+        printf("Direccion: %s\n", pacienteEncontrado->Direccion);
+        printf("Teléfono: %s\n", pacienteEncontrado->Telefono);
+
+        printf("\nIngresos del Paciente:\n");
+        mostrarIngresos(pacienteEncontrado->ingresos);
+    }
+    else
+    {
+        printf("No se encontro un paciente con DNI %d.\n", dni);
+    }
+}
+
+// Función para listar ingresos por paciente
+void listarIngresosPorPaciente(Paciente *raiz)
+{
+    if (raiz != NULL)
+    {
+        // Llamada recursiva al hijo izquierdo
+        listarIngresosPorPaciente(raiz->izquierda);
+
+        if (!raiz->Eliminado)
+        {
+            printf("\nDNI: %d, Nombre: %s\n", raiz->Dni, raiz->ApellidoNombre);
+            printf("Ingresos:\n");
+            IngresoLaboratorio *actual = raiz->ingresos;
+            while (actual != NULL)
+            {
+                if (!actual->Eliminado)
+                {
+                    printf("  Numero de Ingreso: %d, Fecha de Ingreso: %s, Fecha de Retiro: %s\n", actual->NroIngreso, actual->FechaIngreso, actual->FechaRetiro);
+                }
+                actual = actual->siguiente;
+            }
+            if (raiz->ingresos == NULL)
+            {
+                printf("  No hay ingresos registrados.\n");
+            }
+        }
+
+        // Llamada recursiva al hijo derecho
+        listarIngresosPorPaciente(raiz->derecha);
+    }
+}
 
 ///------------------------- FUNCIONES LABORATORIO MENU -------------------------
 void agregarIngresoMenu(Paciente *raiz)
@@ -657,6 +834,19 @@ void mostrarIngresosEnRangoYDatosPacienteMenu(Paciente *raiz, char *fechaDesde, 
     mostrarIngresosEnRangoYDatosPacienteMenu(raiz->derecha, fechaDesde, fechaHasta);
 }
 
+// Función principal para consultar un ingreso específico
+void consultarIngreso(Paciente *raiz, int nroIngreso, char *fechaIngreso)
+{
+    ingresoEncontrado = 0; // Reiniciar la bandera
+    buscarYVerificacionIngreso(raiz, nroIngreso, fechaIngreso);
+
+    if (!ingresoEncontrado)
+    {
+        printf("Ingreso no encontrado o datos erroneos.\n");
+    }
+}
+
+
 ///------------------------- FUNCIONES TEMP -------------------------
 // Función para mostrar la información de un paciente y sus ingresos
 void mostrarPacienteYIngresos(Paciente *raiz, int dniPaciente)
@@ -699,7 +889,6 @@ void mostrarPacienteYIngresosPorNumeroIngreso(Paciente *raiz, int numeroIngreso)
         printf("No se encontró un paciente con ingreso número %d o está eliminado.\n", numeroIngreso);
     }
 }
-
 
 // Función para mostrar la información de un paciente y sus ingresos filtrados por fecha de ingreso
 void mostrarPacienteYIngresosPorFecha(Paciente *raiz, char *fechaDesde)
@@ -803,21 +992,17 @@ void mostrarIngresos(IngresoLaboratorio *ingresos)
 // Función para mostrar todos los pacientes y sus ingresos
 void mostrarTodosLosPacientesYIngresos(Paciente *raiz)
 {
-    if (raiz != NULL)
+    NodoLista *listaOrdenada = NULL;
+    recorrerYOrdenar(raiz, &listaOrdenada);
+    mostrarPacientesEIngresosOrdenados(listaOrdenada);
+
+    // Liberar memoria de la lista
+    NodoLista *temp;
+    while (listaOrdenada != NULL)
     {
-        if (!raiz->Eliminado)
-        {
-            printf("DNI: %d\n", raiz->Dni);
-            printf("Nombre: %s\n", raiz->ApellidoNombre);
-            printf("Edad: %d\n", raiz->Edad);
-            printf("Direccion: %s\n", raiz->Direccion);
-            printf("Telefono: %s\n", raiz->Telefono);
-            printf("INGRESOS:\n");
-            mostrarIngresos(raiz->ingresos);
-            printf("\n");
-        }
-        mostrarTodosLosPacientesYIngresos(raiz->izquierda);
-        mostrarTodosLosPacientesYIngresos(raiz->derecha);
+        temp = listaOrdenada;
+        listaOrdenada = listaOrdenada->siguiente;
+        free(temp);
     }
 }
 
@@ -868,13 +1053,13 @@ void guardarIngresosEnArchivo(FILE *archivo, IngresoLaboratorio *ingresos)
     }
 }
 
-// Función para cargar los datos de pacientes e ingresos desde un archivo
-void cargarDatosDesdeArchivo(Paciente **raiz)
+// Función mejorada para cargar los datos desde un archivo
+void cargarDatosDesdeArchivoMejorado(Paciente **raiz)
 {
     FILE *archivo = fopen("datos.txt", "r");
     if (archivo == NULL)
     {
-        printf("No se pudo abrir el archivo para lectura.\n");
+        perror("Error al abrir el archivo");
         return;
     }
 
@@ -882,33 +1067,38 @@ void cargarDatosDesdeArchivo(Paciente **raiz)
     while (fgets(linea, sizeof(linea), archivo) != NULL)
     {
         char *token = strtok(linea, ",");
-        if (token != NULL)
+        if (token == NULL)
         {
-            if (strcmp(token, "Paciente") == 0)
+            continue;
+        }
+
+        if (strcmp(token, "Paciente") == 0)
+        {
+            // Procesar paciente
+            int dni = atoi(strtok(NULL, ","));
+            char *apellidoNombre = strtok(NULL, ",");
+            int edad = atoi(strtok(NULL, ","));
+            char *direccion = strtok(NULL, ",");
+            char *telefono = strtok(NULL, "\n");
+
+            if (apellidoNombre && direccion && telefono)
             {
-                // Es un paciente
-                int dni = atoi(strtok(NULL, ","));
-                char *apellidoNombre = strtok(NULL, ",");
-                int edad = atoi(strtok(NULL, ","));
-                char *direccion = strtok(NULL, ",");
-                char *telefono = strtok(NULL, "\n");
                 Paciente *nuevoPaciente = crearPaciente(apellidoNombre, edad, dni, direccion, telefono);
                 altaPaciente(raiz, nuevoPaciente);
             }
-            else if (strcmp(token, "Ingreso") == 0)
-            {
-                // Es un ingreso
-                int nroIngreso = atoi(strtok(NULL, ","));
-                char *fechaIngreso = strtok(NULL, ",");
-                char *fechaRetiro = strtok(NULL, ",");
-                int dniPaciente = atoi(strtok(NULL, ","));
-                int matriculaProfesional = atoi(strtok(NULL, "\n"));
-                IngresoLaboratorio *nuevoIngreso = crearIngreso(nroIngreso, fechaIngreso, fechaRetiro, dniPaciente, matriculaProfesional);
-                altaIngreso(*raiz, dniPaciente, nuevoIngreso);
-            }
+        }
+        else if (strcmp(token, "Ingreso") == 0)
+        {
+            // Es un ingreso
+            int nroIngreso = atoi(strtok(NULL, ","));
+            char *fechaIngreso = strtok(NULL, ",");
+            char *fechaRetiro = strtok(NULL, ",");
+            int dniPaciente = atoi(strtok(NULL, ","));
+            int matriculaProfesional = atoi(strtok(NULL, "\n"));
+            IngresoLaboratorio *nuevoIngreso = crearIngreso(nroIngreso, fechaIngreso, fechaRetiro, dniPaciente, matriculaProfesional);
+            altaIngreso(*raiz, dniPaciente, nuevoIngreso);
         }
     }
-
     fclose(archivo);
 }
 
