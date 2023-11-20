@@ -69,6 +69,7 @@ void eliminarPaciente(Paciente *raiz, int dni);
 void agregarIngresoMenu(Paciente *raiz);
 void modificarIngresoMenu(Paciente *raiz);
 void eliminarIngresoMenu(Paciente *raiz);
+void buscarPracticasMenu(Paciente *raiz);
 
 ///PROTOTIPADOS TEMP:
 void mostrarPacienteYIngresos(Paciente *raiz, int dniPaciente);
@@ -83,16 +84,6 @@ void cargarDatosDesdeArchivo(Paciente **raiz);
 
 ///PROTOTIPADOS PRACTICAS POR INGRESO:
 Practica *crearPractica(int NroPractica, char *Resultado);
-void altaPractica(IngresoLaboratorio *ingreso, int NroPractica, char *Resultado);
-Practica *buscarPractica(IngresoLaboratorio *ingreso, int NroPractica);
-void modificacionPractica(IngresoLaboratorio *ingreso, int NroPractica, char *NuevoResultado);
-void bajaPractica(IngresoLaboratorio *ingreso, int NroPractica);
-
-///PROTOTIPADOS PRACTICAS POR INGRESO MENU:
-void agregarPracticaMenu(Paciente *raiz);
-void modificarPracticaMenu(Paciente *raiz);
-void eliminarPracticaMenu(Paciente *raiz);
-
 
 
 int anchoConsola;
@@ -171,7 +162,9 @@ int main()
         fila++;
         centrarTextoAuto("15. Eliminar practica de un Ingreso", fila);
         fila++;
-        centrarTextoAuto("16. Salir", fila);
+        centrarTextoAuto("16. Buscar practica que comiencen con...", fila);
+        fila++;
+        centrarTextoAuto("17. Salir", fila);
         fila++;
 
         centrarTextoAuto("Seleccione una opcion: \n", fila);
@@ -240,7 +233,7 @@ int main()
             guardarDatosEnArchivo(raiz);
             break;
         case 12:
-            printf("Ingrese el Número de Ingreso (0 para buscar por fecha): ");
+            printf("Ingrese el numero de Ingreso (0 para buscar por fecha): ");
             int nroIngreso;
             char fechaIngreso[11];
             scanf("%d", &nroIngreso);
@@ -265,6 +258,9 @@ int main()
             eliminarPracticaMenu(raiz);
             break;
         case 16:
+            buscarPracticasMenu(raiz);
+            break;
+        case 17:
             printf("Saliendo del programa...\n");
             guardarDatosEnArchivo(raiz);
             break;
@@ -273,7 +269,7 @@ int main()
         }
         system("pause");
     }
-    while (opcion != 16);
+    while (opcion != 17);
     guardarDatosEnArchivo(raiz);
 
     return 0;
@@ -323,13 +319,13 @@ Paciente *buscarPacientePorNumeroIngreso(Paciente *raiz, int numeroIngreso)
 {
     if (raiz == NULL)
     {
-        return NULL; // No se encontró el paciente
+        return NULL; // No se encontro el paciente
     }
 
     // Recursivamente, busca en el lado izquierdo y derecho del árbol
     if (numeroIngreso == raiz->ingresos->NroIngreso)
     {
-        return raiz; // Se encontró el paciente con el número de ingreso
+        return raiz; // Se encontro el paciente con el numero de ingreso
     }
     else if (numeroIngreso > raiz->ingresos->NroIngreso)
     {
@@ -464,6 +460,7 @@ IngresoLaboratorio *crearIngreso(int NroIngreso, char *FechaIngreso, char *Fecha
     return nuevoIngreso;
 }
 
+
 void mostrarIngresosPorNumero(IngresoLaboratorio *ingresos, int numeroIngreso)
 {
     IngresoLaboratorio *actual = ingresos;
@@ -474,7 +471,7 @@ void mostrarIngresosPorNumero(IngresoLaboratorio *ingresos, int numeroIngreso)
         if (!actual->Eliminado && actual->NroIngreso == numeroIngreso)
         {
             encontrados++;
-            printf("Número de Ingreso: %d\n", actual->NroIngreso);
+            printf("numero de Ingreso: %d\n", actual->NroIngreso);
             printf("Fecha de Ingreso: %s\n", actual->FechaIngreso);
             printf("Fecha de Retiro: %s\n", actual->FechaRetiro);
             printf("Matrícula Profesional: %d\n\n", actual->MatriculaProfesional);
@@ -484,7 +481,7 @@ void mostrarIngresosPorNumero(IngresoLaboratorio *ingresos, int numeroIngreso)
 
     if (encontrados == 0)
     {
-        printf("No se encontraron ingresos con el número especificado.\n");
+        printf("No se encontraron ingresos con el numero especificado.\n");
     }
 }
 
@@ -682,7 +679,7 @@ void modificarPacienteMenu(Paciente *raiz)
         gets(nuevoTelefono);
 
         modificarPaciente(raiz, dni, nuevoApellidoNombre, nuevaEdad, nuevaDireccion, nuevoTelefono);
-        printf("Paciente modificado con éxito.\n");
+        printf("Paciente modificado con exito.\n");
     }
     else
     {
@@ -704,7 +701,7 @@ void eliminarPaciente(Paciente *raiz, int dni)
         }
         else
         {
-            printf("El paciente con DNI %d ya está eliminado.\n", dni);
+            printf("El paciente con DNI %d ya esta eliminado.\n", dni);
         }
     }
     else
@@ -724,7 +721,7 @@ void consultarPacientePorDNI(Paciente *raiz, int dni)
         printf("Nombre: %s\n", pacienteEncontrado->ApellidoNombre);
         printf("Edad: %d\n", pacienteEncontrado->Edad);
         printf("Direccion: %s\n", pacienteEncontrado->Direccion);
-        printf("Teléfono: %s\n", pacienteEncontrado->Telefono);
+        printf("Telefono: %s\n", pacienteEncontrado->Telefono);
 
         printf("\nIngresos del Paciente:\n");
         mostrarIngresos(pacienteEncontrado->ingresos);
@@ -930,7 +927,7 @@ void mostrarPacienteYIngresos(Paciente *raiz, int dniPaciente)
     }
 }
 
-// Función para mostrar información de un paciente y sus ingresos filtrados por número de ingreso
+// Función para mostrar información de un paciente y sus ingresos filtrados por numero de ingreso
 void mostrarPacienteYIngresosPorNumeroIngreso(Paciente *raiz, int numeroIngreso)
 {
     Paciente *paciente = buscarPacientePorNumeroIngreso(raiz, numeroIngreso);
@@ -947,7 +944,7 @@ void mostrarPacienteYIngresosPorNumeroIngreso(Paciente *raiz, int numeroIngreso)
     }
     else
     {
-        printf("No se encontró un paciente con ingreso número %d o está eliminado.\n", numeroIngreso);
+        printf("No se encontro un paciente con ingreso numero %d o está eliminado.\n", numeroIngreso);
     }
 }
 
@@ -998,7 +995,7 @@ void mostrarPacienteYIngresosConFiltrado(Paciente *raiz)
 
     printf("Seleccione una opcion de filtrado:\n");
     printf("1. Filtrar por DNI\n");
-    printf("2. Filtrar por número de ingreso\n");
+    printf("2. Filtrar por numero de ingreso\n");
     printf("3. Filtrar por fecha de ingreso\n");
 
     int opcionFiltrado;
@@ -1015,8 +1012,8 @@ void mostrarPacienteYIngresosConFiltrado(Paciente *raiz)
         mostrarPacienteYIngresos(raiz, dniFiltrar);
         break;
     case 2:
-        // Filtrar por número de ingreso
-        printf("Ingrese el número de ingreso a filtrar: ");
+        // Filtrar por numero de ingreso
+        printf("Ingrese el numero de ingreso a filtrar: ");
         scanf("%d", &numeroIngreso);
         system("cls");
         mostrarPacienteYIngresosPorNumeroIngreso(raiz, numeroIngreso);
@@ -1189,7 +1186,7 @@ void altaPractica(IngresoLaboratorio *ingreso, int NroPractica, char *Resultado)
     ingreso->practicas = nuevaPractica;
 }
 
-// Función para buscar una Practica específica por número
+// Función para buscar una Practica específica por numero
 Practica *buscarPractica(IngresoLaboratorio *ingreso, int NroPractica)
 {
     Practica *actual = ingreso->practicas;
@@ -1206,7 +1203,7 @@ Practica *buscarPractica(IngresoLaboratorio *ingreso, int NroPractica)
 
 void modificacionPractica(IngresoLaboratorio *ingreso, int NroPractica, char *NuevoResultado)
 {
-    // Buscar la Practica por su número
+    // Buscar la Practica por su numero
     Practica *practica = buscarPractica(ingreso, NroPractica);
 
     // Si la Practica existe, modificar su nombre (resultado)
@@ -1216,7 +1213,7 @@ void modificacionPractica(IngresoLaboratorio *ingreso, int NroPractica, char *Nu
     }
     else
     {
-        printf("La Practica con número %d no existe.\n", NroPractica);
+        printf("La Practica con numero %d no existe.\n", NroPractica);
     }
 }
 
@@ -1239,14 +1236,52 @@ void bajaPractica(IngresoLaboratorio *ingreso, int NroPractica)
         }
         else
         {
-            printf("La Practica con número %d no se puede eliminar porque ya fue incluida en un ingreso.\n", NroPractica);
+            printf("La Practica con numero %d no se puede eliminar porque ya fue incluida en un ingreso.\n", NroPractica);
         }
     }
     else
     {
-        printf("La Practica con número %d no existe.\n", NroPractica);
+        printf("La Practica con numero %d no existe.\n", NroPractica);
     }
 }
+
+void listarPracticasPorPrefijoFor(Practica *practicas, const char *prefijo)
+{
+    for (Practica *p = practicas; p != NULL; p = p->siguiente)
+    {
+        if (strncmp(p->Resultado, prefijo, strlen(prefijo)) == 0)
+        {
+            printf("Practica N° %d, Resultado: %s\n", p->NroPractica, p->Resultado);
+        }
+    }
+}
+
+void buscarPracticasConPrefijo(Paciente *raiz, const char *prefijo)
+{
+    if (raiz == NULL) return;
+
+    // Buscar en subárbol izquierdo
+    buscarPracticasConPrefijo(raiz->izquierda, prefijo);
+
+    // Listar Practicas del paciente actual que comiencen con el prefijo
+    if (!raiz->Eliminado && raiz->ingresos)
+    {
+        IngresoLaboratorio *ingreso = raiz->ingresos;
+        while (ingreso != NULL)
+        {
+            if (!ingreso->Eliminado)
+            {
+                listarPracticasPorPrefijoFor(ingreso->practicas, prefijo);
+            }
+            ingreso = ingreso->siguiente;
+        }
+    }
+
+    // Buscar en subárbol derecho
+    buscarPracticasConPrefijo(raiz->derecha, prefijo);
+}
+
+
 
 ///------------------------- FUNCIONES PRACTICA POR INGREGO MENU-------------------------
 void agregarPracticaMenu(Paciente *raiz)
@@ -1256,28 +1291,31 @@ void agregarPracticaMenu(Paciente *raiz)
 
     printf("Ingrese el DNI del paciente: ");
     scanf("%d", &dniPaciente);
-    // Aquí deberías buscar al paciente y su ingreso correspondiente
+
     Paciente *paciente = buscarPaciente(raiz, dniPaciente);
 
     if (paciente != NULL)
     {
-        printf("Ingrese el número de ingreso: ");
+        printf("Ingrese el numero de ingreso: ");
         scanf("%d", &nroIngreso);
         IngresoLaboratorio *ingreso = buscarIngreso(paciente, nroIngreso);
 
         if (ingreso != NULL)
         {
-            printf("Ingrese el número de la Practica: ");
+            printf("Ingrese el numero de la Practica: ");
+            fflush(stdin);
             scanf("%d", &nroPractica);
+
             printf("Ingrese el resultado de la Practica: ");
-            scanf("%s", resultado); // Asumiendo que no hay espacios en el resultado
+            fflush(stdin);
+            gets(&resultado);
 
             altaPractica(ingreso, nroPractica, resultado);
             printf("Practica agregada correctamente.\n");
         }
         else
         {
-            printf("No se encontro el ingreso con el número %d.\n", nroIngreso);
+            printf("No se encontro el ingreso con el numero %d.\n", nroIngreso);
         }
     }
     else
@@ -1293,33 +1331,38 @@ void modificarPracticaMenu(Paciente *raiz)
 
     printf("Ingrese el DNI del paciente: ");
     scanf("%d", &dniPaciente);
-    // Aquí deberías buscar al paciente y su ingreso correspondiente
+
+
     Paciente *paciente = buscarPaciente(raiz, dniPaciente);
 
     if (paciente != NULL)
     {
-        printf("Ingrese el número de ingreso: ");
+        printf("Ingrese el numero de ingreso: ");
         scanf("%d", &nroIngreso);
         IngresoLaboratorio *ingreso = buscarIngreso(paciente, nroIngreso);
 
         if (ingreso != NULL)
         {
-            printf("Ingrese el número de la Practica a modificar: ");
+            printf("Ingrese el numero de la Practica a modificar: ");
+            fflush(stdin);
             scanf("%d", &nroPractica);
+
             printf("Ingrese el nuevo resultado de la Practica: ");
-            scanf("%s", nuevoResultado); // Asumiendo que no hay espacios en el resultado
+            fflush(stdin);
+            gets(&nuevoResultado);
+
 
             modificacionPractica(ingreso, nroPractica, nuevoResultado);
             printf("Practica modificada correctamente.\n");
         }
         else
         {
-            printf("No se encontró el ingreso con el número %d.\n", nroIngreso);
+            printf("No se encontro el ingreso con el numero %d.\n", nroIngreso);
         }
     }
     else
     {
-        printf("No se encontró un paciente con DNI %d.\n", dniPaciente);
+        printf("No se encontro un paciente con DNI %d.\n", dniPaciente);
     }
 }
 
@@ -1334,13 +1377,13 @@ void eliminarPracticaMenu(Paciente *raiz)
 
     if (paciente != NULL)
     {
-        printf("Ingrese el número de ingreso: ");
+        printf("Ingrese el numero de ingreso: ");
         scanf("%d", &nroIngreso);
         IngresoLaboratorio *ingreso = buscarIngreso(paciente, nroIngreso);
 
         if (ingreso != NULL)
         {
-            printf("Ingrese el número de la Practica a eliminar: ");
+            printf("Ingrese el numero de la Practica a eliminar: ");
             scanf("%d", &nroPractica);
 
             bajaPractica(ingreso, nroPractica);
@@ -1348,12 +1391,21 @@ void eliminarPracticaMenu(Paciente *raiz)
         }
         else
         {
-            printf("No se encontró el ingreso con el número %d.\n", nroIngreso);
+            printf("No se encontro el ingreso con el numero %d.\n", nroIngreso);
         }
     }
     else
     {
-        printf("No se encontró un paciente con DNI %d.\n", dniPaciente);
+        printf("No se encontro un paciente con DNI %d.\n", dniPaciente);
     }
+}
+
+// Función que será llamada desde el menú principal
+void buscarPracticasMenu(Paciente *raiz)
+{
+    char prefijo[256];
+    printf("Ingrese el prefijo para filtrar las Practicas (por ejemplo 'he'): ");
+    scanf("%255s", prefijo);  // Usar %255s para prevenir desbordamiento de búfer
+    buscarPracticasConPrefijo(raiz, prefijo);
 }
 
