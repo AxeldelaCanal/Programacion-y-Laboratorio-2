@@ -1415,7 +1415,7 @@ void eliminarPracticaMenu(Paciente *raiz)
             scanf("%d", &nroPractica);
 
             bajaPractica(ingreso, nroPractica);
-            printf("Practica eliminada correctamente, si no tenía resultados asociados.\n");
+            printf("Practica eliminada correctamente, si no tenia resultados asociados.\n");
         }
         else
         {

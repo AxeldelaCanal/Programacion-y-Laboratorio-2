@@ -1,3 +1,1 @@
-Paciente,41149249,de la Canal Axel,25,Coronel Suarez 3056,2235304242
-Ingreso,1,2023-11-10,2023-11-20,41149249,1234
-Practica,1,1,Covid Negativo
+Paciente,0,,0,,
