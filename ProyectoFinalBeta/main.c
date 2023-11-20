@@ -84,6 +84,19 @@ void cargarDatosDesdeArchivo(Paciente **raiz);
 
 ///PROTOTIPADOS PRACTICAS POR INGRESO:
 Practica *crearPractica(int NroPractica, char *Resultado);
+void altaPractica(IngresoLaboratorio *ingreso, int NroPractica, char *Resultado);
+Practica *buscarPractica(IngresoLaboratorio *ingreso, int NroPractica);
+void modificacionPractica(IngresoLaboratorio *ingreso, int NroPractica, char *NuevoResultado);
+void bajaPractica(IngresoLaboratorio *ingreso, int NroPractica);
+void listarPracticasPorPrefijoFor(Practica *practicas, const char *prefijo);
+void buscarPracticasConPrefijo(Paciente *raiz, const char *prefijo);
+
+///PROTOTIPADOS PRACTICAS POR INGRESO MENU:
+void agregarPracticaMenu(Paciente *raiz);
+void modificarPracticaMenu(Paciente *raiz);
+void eliminarPracticaMenu(Paciente *raiz);
+void buscarPracticasMenu(Paciente *raiz);
+
 
 
 int anchoConsola;
@@ -459,7 +472,6 @@ IngresoLaboratorio *crearIngreso(int NroIngreso, char *FechaIngreso, char *Fecha
     }
     return nuevoIngreso;
 }
-
 
 void mostrarIngresosPorNumero(IngresoLaboratorio *ingresos, int numeroIngreso)
 {
@@ -1281,8 +1293,6 @@ void buscarPracticasConPrefijo(Paciente *raiz, const char *prefijo)
     buscarPracticasConPrefijo(raiz->derecha, prefijo);
 }
 
-
-
 ///------------------------- FUNCIONES PRACTICA POR INGREGO MENU-------------------------
 void agregarPracticaMenu(Paciente *raiz)
 {
@@ -1400,7 +1410,6 @@ void eliminarPracticaMenu(Paciente *raiz)
     }
 }
 
-// Función que será llamada desde el menú principal
 void buscarPracticasMenu(Paciente *raiz)
 {
     char prefijo[256];
