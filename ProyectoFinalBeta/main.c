@@ -589,7 +589,7 @@ void buscarYVerificacionIngreso(Paciente *raiz, int nroIngreso, const char *fech
     }
 
     // Búsqueda en el subárbol izquierdo
-    buscarYVerificacionIngreso(raiz->derecha, nroIngreso, fechaIngreso);
+    buscarYVerificacionIngreso(raiz->izquierda, nroIngreso, fechaIngreso);
 
     if (!raiz->Eliminado)
     {
@@ -1118,6 +1118,14 @@ void guardarIngresosEnArchivo(FILE *archivo, IngresoLaboratorio *ingresos)
         if (!actual->Eliminado)
         {
             fprintf(archivo, "Ingreso,%d,%s,%s,%d,%d\n", actual->NroIngreso, actual->FechaIngreso, actual->FechaRetiro, actual->DniPaciente, actual->MatriculaProfesional);
+
+            // Guardar las prácticas asociadas a este ingreso
+            Practica *practicaActual = actual->practicas;
+            while (practicaActual != NULL)
+            {
+                fprintf(archivo, "Practica,%d,%d,%s\n", actual->NroIngreso, practicaActual->NroPractica, practicaActual->Resultado);
+                practicaActual = practicaActual->siguiente;
+            }
         }
         actual = actual->siguiente;
     }
@@ -1134,13 +1142,12 @@ void cargarDatosDesdeArchivoMejorado(Paciente **raiz)
     }
 
     char linea[200];
+    IngresoLaboratorio *ingresoTemp = NULL; // Variable temporal para almacenar el último ingreso cargado
+
     while (fgets(linea, sizeof(linea), archivo) != NULL)
     {
         char *token = strtok(linea, ",");
-        if (token == NULL)
-        {
-            continue;
-        }
+        if (token == NULL) continue;
 
         if (strcmp(token, "Paciente") == 0)
         {
@@ -1155,27 +1162,41 @@ void cargarDatosDesdeArchivoMejorado(Paciente **raiz)
             {
                 Paciente *nuevoPaciente = crearPaciente(apellidoNombre, edad, dni, direccion, telefono);
                 altaPaciente(raiz, nuevoPaciente);
+                ingresoTemp = NULL; // Restablecer la variable temporal para el nuevo paciente
             }
         }
-
-        if (strcmp(token, "Ingreso") == 0)
+        else if (strcmp(token, "Ingreso") == 0)
         {
-            // Es un ingreso
+            // Procesar ingreso
             int nroIngreso = atoi(strtok(NULL, ","));
             char *fechaIngreso = strtok(NULL, ",");
             char *fechaRetiro = strtok(NULL, ",");
             int dniPaciente = atoi(strtok(NULL, ","));
-            int matriculaProfesional = atoi(strtok(NULL, "\n"));
-            if(fechaIngreso && fechaRetiro)
-            {
-                IngresoLaboratorio *nuevoIngreso = crearIngreso(nroIngreso, fechaIngreso, fechaRetiro, dniPaciente, matriculaProfesional);
-                altaIngreso(*raiz, dniPaciente, nuevoIngreso);
-            }
 
+            Paciente *paciente = buscarPaciente(*raiz, dniPaciente);
+            if (paciente != NULL && fechaIngreso && fechaRetiro)
+            {
+                IngresoLaboratorio *nuevoIngreso = crearIngreso(nroIngreso, fechaIngreso, fechaRetiro, dniPaciente, 0); // Asumiendo que MatriculaProfesional no se guarda
+                agregarIngreso(paciente, nuevoIngreso);
+                ingresoTemp = nuevoIngreso; // Guardar referencia al ingreso recién creado
+            }
+        }
+        else if (strcmp(token, "Practica") == 0 && ingresoTemp != NULL)
+        {
+            // Es una práctica, asociarla al último ingreso cargado
+            int nroIngreso = atoi(strtok(NULL, ","));
+            int nroPractica = atoi(strtok(NULL, ","));
+            char *resultado = strtok(NULL, "\n");
+            if (nroIngreso == ingresoTemp->NroIngreso)
+            {
+                altaPractica(ingresoTemp, nroPractica, resultado);
+            }
         }
     }
+
     fclose(archivo);
 }
+
 
 ///------------------------- FUNCIONES PRACTICA POR INGREGO -------------------------
 // Función para crear una nueva Practica
