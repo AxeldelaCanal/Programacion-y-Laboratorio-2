@@ -116,79 +116,71 @@ void centrarTextoAuto(const char *texto, int y)
     posicionCursor.X = espaciosEnBlanco;
     posicionCursor.Y = y - 1;
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), posicionCursor);
-
     printf("%s", texto);
-}
 
+}
 
 
 int main()
 {
-    Paciente *raiz = NULL; // Declaración de la raíz del árbol
-    cargarDatosDesdeArchivoMejorado(&raiz); // Cargar datos almacenados previamente
-    int dniMostrar;
-    int dniAEliminar;
-    int dniConsulta;
+    Paciente *raiz = NULL;
+    cargarDatosDesdeArchivoMejorado(&raiz);
+    int dniMostrar, dniAEliminar, dniConsulta;
     int opcion;
+    char entrada[100];
+    int entradaValida;
 
     char fechaDesde[11];
-    char fechaHasta[11];  // Variables para el rango de fechas
+    char fechaHasta[11];
 
     do
     {
         system("cls");
 
         int fila = 5; // Fila donde se centrará el texto
-        centrarTextoAuto("----------------------------------------------", fila);
-        fila++;
-        centrarTextoAuto("----------------MENU PRINCIPAL----------------", fila);
-        fila++;
-        centrarTextoAuto("----------------------------------------------", fila);
-        fila++;
-        centrarTextoAuto("1. Agregar paciente", fila);
-        fila++;
-        centrarTextoAuto("2. Modificar paciente", fila);
-        fila++;
-        centrarTextoAuto("3. Eliminar paciente", fila);
-        fila++;
-        centrarTextoAuto("4. Agregar ingreso", fila);
-        fila++;
-        centrarTextoAuto("5. Modificar ingreso", fila);
-        fila++;
-        centrarTextoAuto("6. Eliminar ingreso", fila);
-        fila++;
-        centrarTextoAuto("7. Mostrar Paciente e Ingreso", fila);
-        fila++;
-        centrarTextoAuto("8. Mostrar todos los Pacientes e Ingresos", fila);
-        fila++;
-        centrarTextoAuto("9. Filtrar ingresos por fecha", fila);  // Nueva opción para filtrar por fecha
-        fila++;
-        centrarTextoAuto("10. Mostrar un Paciente", fila); // Nueva opcion para mostrar un paciente.
-        fila++;
-        centrarTextoAuto("11. Todos los Ingresos por Paciente", fila);
-        fila++;
-        centrarTextoAuto("12. Consultar un Ingreso", fila); // Nueva funcion para mostrar un ingreso.
-        fila++;
-        centrarTextoAuto("13. Agregar practica a un Ingreso", fila);
-        fila++;
-        centrarTextoAuto("14. Modificar practica de un Ingreso", fila);
-        fila++;
-        centrarTextoAuto("15. Eliminar practica de un Ingreso", fila);
-        fila++;
-        centrarTextoAuto("16. Buscar practica que comiencen con...", fila);
-        fila++;
-        centrarTextoAuto("17. Salir", fila);
-        fila++;
+        centrarTextoAuto("----------------------------------------------", fila++);
+        centrarTextoAuto("----------------MENU PRINCIPAL----------------", fila++);
+        centrarTextoAuto("----------------------------------------------", fila++);
+        centrarTextoAuto("1. Agregar paciente", fila++);
+        centrarTextoAuto("2. Modificar paciente", fila++);
+        centrarTextoAuto("3. Eliminar paciente", fila++);
+        centrarTextoAuto("4. Agregar ingreso", fila++);
+        centrarTextoAuto("5. Modificar ingreso", fila++);
+        centrarTextoAuto("6. Eliminar ingreso", fila++);
+        centrarTextoAuto("7. Mostrar Paciente e Ingreso", fila++);
+        centrarTextoAuto("8. Mostrar todos los Pacientes e Ingresos", fila++);
+        centrarTextoAuto("9. Filtrar ingresos por fecha", fila++);
+        centrarTextoAuto("10. Mostrar un Paciente", fila++);
+        centrarTextoAuto("11. Todos los Ingresos por Paciente", fila++);
+        centrarTextoAuto("12. Consultar un Ingreso", fila++);
+        centrarTextoAuto("13. Agregar practica a un Ingreso", fila++);
+        centrarTextoAuto("14. Modificar practica de un Ingreso", fila++);
+        centrarTextoAuto("15. Eliminar practica de un Ingreso", fila++);
+        centrarTextoAuto("16. Buscar practica que comiencen con...", fila++);
+        centrarTextoAuto("17. Salir\n", fila++);
 
-        centrarTextoAuto("Seleccione una opcion: \n", fila);
+        centrarTextoAuto("Seleccione una opcion: ", fila);
 
-        // Ajusta la posición del cursor para la entrada del usuario
-        COORD posicionCursor;
-        posicionCursor.X = (anchoConsola - 1) / 2;
-        posicionCursor.Y = fila;
-        SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), posicionCursor);
+        do
+        {
+            COORD posicionCursor;
+            posicionCursor.X = (anchoConsola - 1) / 2;
+            posicionCursor.Y = fila;
+            SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), posicionCursor);
 
-        scanf("%d", &opcion);
+
+            fgets(entrada, sizeof(entrada), stdin);
+            entradaValida = sscanf(entrada, "%d", &opcion);
+
+            if (entradaValida != 1 || strcspn(entrada, "\n") != strlen(entrada) - 1)
+            {
+                entradaValida = 0;
+                centrarTextoAuto("Por favor ingrese un numero valido\n", fila);
+                centrarTextoAuto("Seleccione una opcion: ", ++fila);
+            }
+        }
+        while (!entradaValida);
+
         system("cls");
 
         switch (opcion)
@@ -263,22 +255,26 @@ int main()
             break;
         case 13:
             agregarPracticaMenu(raiz);
+            guardarDatosEnArchivo(&raiz);
             break;
         case 14:
             modificarPracticaMenu(raiz);
+            guardarDatosEnArchivo(&raiz);
             break;
         case 15:
             eliminarPracticaMenu(raiz);
+            guardarDatosEnArchivo(&raiz);
             break;
         case 16:
             buscarPracticasMenu(raiz);
+
             break;
         case 17:
             printf("Saliendo del programa...\n");
             guardarDatosEnArchivo(raiz);
             break;
         default:
-            centrarTextoAuto("Opcion no valida. Por favor, intente de nuevo.", fila);
+            centrarTextoAuto("Opcion no valida. Por favor, intente de nuevo.\n", fila);
         }
         system("pause");
     }
@@ -287,7 +283,6 @@ int main()
 
     return 0;
 }
-
 
 
 ///------------------------- FUNCIONES PACIENTE -------------------------
@@ -1172,11 +1167,13 @@ void cargarDatosDesdeArchivoMejorado(Paciente **raiz)
             char *fechaIngreso = strtok(NULL, ",");
             char *fechaRetiro = strtok(NULL, ",");
             int dniPaciente = atoi(strtok(NULL, ","));
+            int matriculaProfesional = atoi(strtok(NULL, "\n"));
 
             Paciente *paciente = buscarPaciente(*raiz, dniPaciente);
             if (paciente != NULL && fechaIngreso && fechaRetiro)
             {
-                IngresoLaboratorio *nuevoIngreso = crearIngreso(nroIngreso, fechaIngreso, fechaRetiro, dniPaciente, 0); // Asumiendo que MatriculaProfesional no se guarda
+                // Usa el valor real de la matrícula profesional leído del archivo
+                IngresoLaboratorio *nuevoIngreso = crearIngreso(nroIngreso, fechaIngreso, fechaRetiro, dniPaciente, matriculaProfesional);
                 agregarIngreso(paciente, nuevoIngreso);
                 ingresoTemp = nuevoIngreso; // Guardar referencia al ingreso recién creado
             }

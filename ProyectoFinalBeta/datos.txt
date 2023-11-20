@@ -1,6 +1,3 @@
 Paciente,41149249,de la Canal Axel,25,Coronel Suarez 3056,2235304242
-Ingreso,1,2023-11-20,2023-11-21,41149249,0
-Paciente,13616965,Cebrian Alicia,60,Alvarado 7770,2235559189
-Ingreso,2,2023-11-01,2023-11-11,13616965,0
-Paciente,10123123,de la Canal Carlos,65,Nasser 2351,2235704438
-Ingreso,3,2023-11-01,2023-11-31,10123123,0
+Ingreso,1,2023-11-10,2023-11-20,41149249,1234
+Practica,1,1,Covid Negativo
