@@ -205,12 +205,15 @@ void centrarTextoAuto(const char *texto, int y)
                         break;
                     case 13:
                         agregarPracticaMenu(raiz);
+                        guardarDatosEnArchivo(raiz);
                         break;
                     case 14:
                         modificarPracticaMenu(raiz);
+                        guardarDatosEnArchivo(raiz);
                         break;
                     case 15:
                         eliminarPracticaMenu(raiz);
+                        guardarDatosEnArchivo(raiz);
                         break;
                     case 16:
                         buscarPracticasMenu(raiz);
@@ -508,12 +511,15 @@ void centrarTextoAuto(const char *texto, int y)
                         break;
                     case 7:
                         agregarPracticaMenu(raiz);
+                        guardarDatosEnArchivo(raiz);
                         break;
                     case 8:
                         modificarPracticaMenu(raiz);
+                        guardarDatosEnArchivo(raiz);
                         break;
                     case 9:
                         eliminarPracticaMenu(raiz);
+                        guardarDatosEnArchivo(raiz);
                         break;
                     case 10:
                         buscarPracticasMenu(raiz);
