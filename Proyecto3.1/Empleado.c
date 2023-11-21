@@ -29,7 +29,8 @@ empleados_laboratorio registrarEmpleado()
     {
         printf("Ingrese apellido y nombre: \n");
         fflush(stdin);
-        scanf("%s", empleado.apellidoYnombre);
+        gets(&empleado.apellidoYnombre);
+
 
         nombreValido = verificarApeYNombre(empleado.apellidoYnombre);
 
@@ -59,11 +60,28 @@ empleados_laboratorio registrarEmpleado()
     fflush(stdin);
     scanf("%s", empleado.contrasenia);
 
-    printf("Ingrese perfil: \n");
-    fflush(stdin);
-    scanf("%s", empleado.perfil);
+    do
+    {
+        printf("Ingrese perfil: (administrativo / administrador / profesional)\n");
+        fflush(stdin);
+        scanf("%s", empleado.perfil);
+    } while(comprobarPerfilValido(empleado.perfil));
 
     return empleado;
+}
+
+int comprobarPerfilValido(char perfil[]) {
+    int flag = 1;
+
+    if (strcmp(perfil, "administrativo") == 0 || strcmp(perfil, "administrador") == 0 || strcmp(perfil, "profesional") == 0) {
+        flag = 0;
+    }
+
+    if(flag) {
+        printf("Debes ingresar un perfil valido. \n");
+    }
+
+    return flag;
 }
 
 int comprobarDNIRepetido(int dni)
@@ -257,4 +275,3 @@ int verificarApeYNombre(const char *apeYnombreEmpleado)
 
     return apeYnombreValido;
 }
-

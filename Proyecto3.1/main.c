@@ -25,10 +25,10 @@ void centrarTextoAuto(const char *texto, int y)
 }
 
 
-int main()
-{
+    void opcion1() {
     Paciente *raiz = NULL; // Declaración de la raíz del árbol
     cargarDatosDesdeArchivoMejorado(&raiz); // Cargar datos almacenados previamente
+     int entradaValida = 1;
     int dniMostrar;
     int dniAEliminar;
     int dniConsulta;
@@ -44,35 +44,6 @@ int main()
     int eleccion = 0;
     int fila = 5; // Fila donde se centrará el texto
 
-    do
-    {
-        centrarTextoAuto("Bienvenido. Ya estas registrado?\n", fila);
-        fila++;
-        centrarTextoAuto("1. Si\n", fila);
-        fila++;
-        centrarTextoAuto("2. No\n", fila);
-        fila++;
-        centrarTextoAuto("Seleccione una opcion: \n", fila);
-
-        COORD posicionCursor;
-        posicionCursor.X = (anchoConsola - 1) / 2;
-        posicionCursor.Y = fila;
-        SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), posicionCursor);
-
-        fgets(entrada, sizeof(entrada), stdin); // Leer entrada como texto
-        int entradaValida = sscanf(entrada, "%d", &eleccion);
-
-
-        // Validar la entrada
-        if (entradaValida != 1 || (eleccion != 1 && eleccion != 2))
-        {
-            centrarTextoAuto("Error. Vuelva a intentarlo: \n", fila);
-            system("pause");
-            system("cls");
-        }
-
-        if (eleccion == 1)
-        {
             system("cls");
             printf("Ingrese usuario: \n");
             fflush(stdin);
@@ -139,7 +110,6 @@ int main()
                     fila++;
 
                     centrarTextoAuto("Seleccione una opcion: \n", fila);
-
                     do
                     {
                         // Ajusta la posición del cursor para la entrada del usuario
@@ -563,12 +533,72 @@ int main()
             {
                 printf("Usuario o contrasenia incorrecto.\n");
             }
-        }
-        else if (eleccion == 2)
-        {
+    }
+
+
+    void opcion2() {
             system("cls");
             empleados_laboratorio nuevoEmpleado = registrarEmpleado();
             guardarEmpleadoEnArchivo(nuevoEmpleado);
+    }
+
+
+int main()
+{
+    Paciente *raiz = NULL; // Declaración de la raíz del árbol
+    cargarDatosDesdeArchivoMejorado(&raiz); // Cargar datos almacenados previamente
+    int dniMostrar;
+    int dniAEliminar;
+    int dniConsulta;
+    int dniABuscar;
+    int opcion;
+    char entrada[100];
+
+    char fechaDesde[11];
+    char fechaHasta[11];  // Variables para el rango de fechas
+
+    char usuario[20]; // Variables para ingreso de empleado
+    char contrasenia[20];
+    int eleccion = 0;
+    int fila = 5; // Fila donde se centrará el texto
+
+    do
+    {
+        centrarTextoAuto("Bienvenido. Ya estas registrado?\n", fila);
+        fila++;
+        centrarTextoAuto("1. Si\n", fila);
+        fila++;
+        centrarTextoAuto("2. No\n", fila);
+        fila++;
+        centrarTextoAuto("Seleccione una opcion: \n", fila);
+
+        COORD posicionCursor;
+        posicionCursor.X = (anchoConsola - 1) / 2;
+        posicionCursor.Y = fila;
+        SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), posicionCursor);
+
+        fgets(entrada, sizeof(entrada), stdin); // Leer entrada como texto
+        int entradaValida = sscanf(entrada, "%d", &eleccion);
+
+
+        // Validar la entrada
+        if (entradaValida != 1 || (eleccion != 1 && eleccion != 2))
+        {
+            centrarTextoAuto("Error. Vuelva a intentarlo: \n", fila);
+            system("pause");
+            system("cls");
+        }
+
+        if (eleccion == 1)
+        {
+            opcion1();
+        }
+        else if (eleccion == 2)
+        {
+            opcion2();
+            printf("Por favor a continuacion ingrese con su usuario. \n");
+            system("pause");
+            opcion1();
         }
     }
     while(eleccion != 1 && eleccion != 2);
