@@ -117,37 +117,29 @@ void opcion1()
             {
             case 1:
                 agregarPacienteMenu(&raiz);
-                guardarDatosEnArchivo(&raiz);
                 break;
             case 2:
                 modificarPacienteMenu(raiz);
-                guardarDatosEnArchivo(&raiz);
                 break;
             case 3:
                 printf("Ingrese el DNI del paciente a eliminar: ");
                 scanf("%d", &dniAEliminar);
                 eliminarPaciente(raiz, dniAEliminar);
-                guardarDatosEnArchivo(&raiz);
                 break;
             case 4:
                 agregarIngresoMenu(raiz);
-                guardarDatosEnArchivo(&raiz);
                 break;
             case 5:
                 modificarIngresoMenu(raiz);
-                guardarDatosEnArchivo(&raiz);
                 break;
             case 6:
                 eliminarIngresoMenu(raiz);
-                guardarDatosEnArchivo(raiz);
                 break;
             case 7:
                 mostrarPacienteYIngresosConFiltrado(raiz);
-                guardarDatosEnArchivo(raiz);
                 break;
             case 8:
                 mostrarTodosLosPacientesYIngresos(raiz);
-                guardarDatosEnArchivo(raiz);
                 break;
             case 9:
                 printf("Ingrese la fecha de inicio (DD-MM-YYYY): ");
@@ -155,17 +147,14 @@ void opcion1()
                 printf("Ingrese la fecha de fin (DD-MM-YYYY): ");
                 scanf("%s", fechaHasta);
                 mostrarIngresosEnRangoYDatosPacienteMenu(raiz, fechaDesde, fechaHasta);
-                guardarDatosEnArchivo(raiz);
                 break;
             case 10:
                 printf("Ingrese el DNI del paciente a consultar: ");
                 scanf("%d", &dniConsulta);
                 consultarPacientePorDNI(raiz, dniConsulta);
-                guardarDatosEnArchivo(raiz);
                 break;
             case 11:
                 listarIngresosPorPaciente(raiz);
-                guardarDatosEnArchivo(raiz);
                 break;
             case 12:
                 printf("Ingrese el numero de Ingreso (0 para buscar por fecha): ");
@@ -271,37 +260,29 @@ void opcion1()
             {
             case 1:
                 agregarPacienteMenu(&raiz);
-                guardarDatosEnArchivo(&raiz);
                 break;
             case 2:
                 modificarPacienteMenu(raiz);
-                guardarDatosEnArchivo(&raiz);
                 break;
             case 3:
                 printf("Ingrese el DNI del paciente a eliminar: ");
                 scanf("%d", &dniAEliminar);
                 eliminarPaciente(raiz, dniAEliminar);
-                guardarDatosEnArchivo(&raiz);
                 break;
             case 4:
                 agregarIngresoMenu(raiz);
-                guardarDatosEnArchivo(&raiz);
                 break;
             case 5:
                 modificarIngresoMenu(raiz);
-                guardarDatosEnArchivo(&raiz);
                 break;
             case 6:
                 eliminarIngresoMenu(raiz);
-                guardarDatosEnArchivo(raiz);
                 break;
             case 7:
                 mostrarPacienteYIngresosConFiltrado(raiz);
-                guardarDatosEnArchivo(raiz);
                 break;
             case 8:
                 mostrarTodosLosPacientesYIngresos(raiz);
-                guardarDatosEnArchivo(raiz);
                 break;
             case 9:
                 printf("Ingrese la fecha de inicio (DD-MM-YYYY): ");
@@ -309,17 +290,14 @@ void opcion1()
                 printf("Ingrese la fecha de fin (DD-MM-YYYY): ");
                 scanf("%s", fechaHasta);
                 mostrarIngresosEnRangoYDatosPacienteMenu(raiz, fechaDesde, fechaHasta);
-                guardarDatosEnArchivo(raiz);
                 break;
             case 10:
                 printf("Ingrese el DNI del paciente a consultar: ");
                 scanf("%d", &dniConsulta);
                 consultarPacientePorDNI(raiz, dniConsulta);
-                guardarDatosEnArchivo(raiz);
                 break;
             case 11:
                 listarIngresosPorPaciente(raiz);
-                guardarDatosEnArchivo(raiz);
                 break;
             case 12:
                 printf("Ingrese el numero de Ingreso (0 para buscar por fecha): ");
@@ -411,11 +389,9 @@ void opcion1()
             {
             case 1:
                 mostrarPacienteYIngresosConFiltrado(raiz);
-                guardarDatosEnArchivo(raiz);
                 break;
             case 2:
                 mostrarTodosLosPacientesYIngresos(raiz);
-                guardarDatosEnArchivo(raiz);
                 break;
             case 3:
                 printf("Ingrese la fecha de inicio (DD-MM-YYYY): ");
@@ -423,17 +399,14 @@ void opcion1()
                 printf("Ingrese la fecha de fin (DD-MM-YYYY): ");
                 scanf("%s", fechaHasta);
                 mostrarIngresosEnRangoYDatosPacienteMenu(raiz, fechaDesde, fechaHasta);
-                guardarDatosEnArchivo(raiz);
                 break;
             case 4:
                 printf("Ingrese el DNI del paciente a consultar: ");
                 scanf("%d", &dniConsulta);
                 consultarPacientePorDNI(raiz, dniConsulta);
-                guardarDatosEnArchivo(raiz);
                 break;
             case 5:
                 listarIngresosPorPaciente(raiz);
-                guardarDatosEnArchivo(raiz);
                 break;
             case 6:
                 printf("Ingrese el numero de Ingreso (0 para buscar por fecha): ");

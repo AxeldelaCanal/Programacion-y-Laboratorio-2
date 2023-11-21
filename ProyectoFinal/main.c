@@ -47,6 +47,5 @@ int main()
         }
     }
     while(eleccion != 1 && eleccion != 2);
-    guardarDatosEnArchivo(raiz);
     return 0;
 }

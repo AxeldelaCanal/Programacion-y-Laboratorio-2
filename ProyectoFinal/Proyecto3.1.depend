@@ -32,14 +32,14 @@
 	<string.h>
 	<windows.h>
 
-1700577239 source:c:\users\axelu\onedrive\escritorio\programacion y laboratorio 2\proyectofinal\empleado.c
+1700577240 source:c:\users\axelu\onedrive\escritorio\programacion y laboratorio 2\proyectofinal\empleado.c
 	"Empleado.h"
 
-1700577239 c:\users\axelu\onedrive\escritorio\programacion y laboratorio 2\proyectofinal\empleado.h
+1700577240 c:\users\axelu\onedrive\escritorio\programacion y laboratorio 2\proyectofinal\empleado.h
 	<stdio.h>
 	<stdlib.h>
 
-1700577240 source:c:\users\axelu\onedrive\escritorio\programacion y laboratorio 2\proyectofinal\menu.c
+1700588851 source:c:\users\axelu\onedrive\escritorio\programacion y laboratorio 2\proyectofinal\menu.c
 	"Menu.h"
 	"Paciente.h"
 	"Empleado.h"
@@ -48,13 +48,19 @@
 	<string.h>
 	<windows.h>
 
-1700577240 c:\users\axelu\onedrive\escritorio\programacion y laboratorio 2\proyectofinal\menu.h
+1700577242 c:\users\axelu\onedrive\escritorio\programacion y laboratorio 2\proyectofinal\menu.h
 
-1700577240 c:\users\axelu\onedrive\escritorio\programacion y laboratorio 2\proyectofinal\paciente.h
+1700577242 c:\users\axelu\onedrive\escritorio\programacion y laboratorio 2\proyectofinal\paciente.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 
-1700577240 source:c:\users\axelu\onedrive\escritorio\programacion y laboratorio 2\proyectofinal\paciente.c
+1700588551 source:c:\users\axelu\onedrive\escritorio\programacion y laboratorio 2\proyectofinal\paciente.c
 	"Paciente.h"
+
+1700588445 source:c:\users\axelu\onedrive\escritorio\programacion y laboratorio 2\proyectofinal\main.c
+	"Empleado.h"
+	"Paciente.h"
+	"Menu.h"
+	<windows.h>
 
