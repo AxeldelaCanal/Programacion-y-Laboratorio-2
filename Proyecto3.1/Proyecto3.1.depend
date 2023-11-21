@@ -1,0 +1,22 @@
+# depslib dependency file v1.0
+1700531071 source:c:\users\gc\onedrive\escritorio\proyecto3.1\empleado.c
+	"Empleado.h"
+
+1700525606 c:\users\gc\onedrive\escritorio\proyecto3.1\empleado.h
+	<stdio.h>
+	<stdlib.h>
+
+1700531343 source:c:\users\gc\onedrive\escritorio\proyecto3.1\main.c
+	"Empleado.h"
+	"Paciente.h"
+	<string.h>
+	<windows.h>
+
+1700527635 c:\users\gc\onedrive\escritorio\proyecto3.1\paciente.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1700533375 source:c:\users\gc\onedrive\escritorio\proyecto3.1\paciente.c
+	"Paciente.h"
+

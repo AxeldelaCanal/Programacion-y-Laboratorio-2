@@ -1,290 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <windows.h> // Incluye la biblioteca necesaria para GetConsoleScreenBufferInfo en Windows
-
-// Definición de la estructura Practica
-typedef struct Practica
-{
-    int NroPractica;
-    char Resultado[256]; // Suponiendo que los resultados de la Practica se puedan almacenar en una cadena
-    struct Practica *siguiente; // Apuntador a la siguiente Practica en la lista
-} Practica;
-
-// Definición de las estructuras
-typedef struct IngresoLaboratorio
-{
-    int NroIngreso;
-    char FechaIngreso[11];
-    char FechaRetiro[11];
-    int DniPaciente;
-    int MatriculaProfesional;
-    int Eliminado; // 0 para no eliminado, 1 para eliminado
-    struct IngresoLaboratorio *siguiente; // Apuntador al siguiente ingreso en la lista
-    Practica *practicas; // Apuntador al primer elemento en la lista de practicas
-} IngresoLaboratorio;
-
-typedef struct Paciente
-{
-    char ApellidoNombre[41];
-    int Edad;
-    int Dni;
-    char Direccion[31];
-    char Telefono[16];
-    int Eliminado; // 0 para no eliminado, 1 para eliminado
-    struct Paciente *izquierda, *derecha; // Apuntadores al hijo izquierdo y derecho en el árbol
-    IngresoLaboratorio *ingresos; // Apuntador al primer ingreso en la lista de ingresos
-} Paciente;
-
-// Estructura para la lista ordenada
-typedef struct NodoLista
-{
-    Paciente *paciente;
-    struct NodoLista *siguiente;
-} NodoLista;
-
-
-// Prototipos de funciones
-///PROTOTIPADOS PACIENTE:
-Paciente *crearPaciente(char *ApellidoNombre, int Edad, int Dni, char *Direccion, char *Telefono);
-Paciente *buscarPaciente(Paciente *raiz, int dni);
-void altaPaciente(Paciente **raiz, Paciente *nuevoPaciente);
-void modificarPaciente(Paciente *raiz, int dni, char *nuevoApellidoNombre, int nuevaEdad, char *nuevaDireccion, char *nuevoTelefono);
-void bajaPaciente(Paciente *raiz, int dni);
-
-///PROTOTIPADOS INGRESO LABORATORIO:
-IngresoLaboratorio *crearIngreso(int NroIngreso, char *FechaIngreso, char *FechaRetiro, int DniPaciente, int MatriculaProfesional);
-void agregarIngreso(Paciente *paciente, IngresoLaboratorio *ingreso);
-void altaIngreso(Paciente *raiz, int dniPaciente, IngresoLaboratorio *nuevoIngreso);
-IngresoLaboratorio *buscarIngreso(Paciente *paciente, int nroIngreso);
-void modificarIngreso(Paciente *raiz, int dniPaciente, int nroIngreso, char *nuevaFechaIngreso, char *nuevaFechaRetiro, int nuevaMatricula, int numeroIngreso);
-void bajaIngreso(Paciente *raiz, int dniPaciente, int nroIngreso);
-
-///PROTOTIPADOS PACIENTE MENU:
-void agregarPacienteMenu(Paciente **raiz);
-void modificarPacienteMenu(Paciente *raiz);
-void eliminarPaciente(Paciente *raiz, int dni);
-
-///PROTOTIPADOS LABORATORIO MENU:
-void agregarIngresoMenu(Paciente *raiz);
-void modificarIngresoMenu(Paciente *raiz);
-void eliminarIngresoMenu(Paciente *raiz);
-void buscarPracticasMenu(Paciente *raiz);
-
-///PROTOTIPADOS TEMP:
-void mostrarPacienteYIngresos(Paciente *raiz, int dniPaciente);
-void mostrarIngresos(IngresoLaboratorio *ingresos);
-void mostrarTodosLosPacientesYIngresos(Paciente *raiz);
-
-///PROTOTIPADOS ARCHIVO:
-void guardarDatosEnArchivo(Paciente *raiz);
-void guardarPacientesEnArchivo(FILE *archivo, Paciente *raiz);
-void guardarIngresosEnArchivo(FILE *archivo, IngresoLaboratorio *ingresos);
-void cargarDatosDesdeArchivo(Paciente **raiz);
-
-///PROTOTIPADOS PRACTICAS POR INGRESO:
-Practica *crearPractica(int NroPractica, char *Resultado);
-void altaPractica(IngresoLaboratorio *ingreso, int NroPractica, char *Resultado);
-Practica *buscarPractica(IngresoLaboratorio *ingreso, int NroPractica);
-void modificacionPractica(IngresoLaboratorio *ingreso, int NroPractica, char *NuevoResultado);
-void bajaPractica(IngresoLaboratorio *ingreso, int NroPractica);
-void listarPracticasPorPrefijoFor(Practica *practicas, const char *prefijo);
-void buscarPracticasConPrefijo(Paciente *raiz, const char *prefijo);
-
-///PROTOTIPADOS PRACTICAS POR INGRESO MENU:
-void agregarPracticaMenu(Paciente *raiz);
-void modificarPracticaMenu(Paciente *raiz);
-void eliminarPracticaMenu(Paciente *raiz);
-void buscarPracticasMenu(Paciente *raiz);
-
-
-
-int anchoConsola;
-int ingresoEncontrado = 0;
-
-// Función para centrar el texto en la consola automáticamente
-void centrarTextoAuto(const char *texto, int y)
-{
-    CONSOLE_SCREEN_BUFFER_INFO csbi;
-    GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
-    anchoConsola = csbi.srWindow.Right - csbi.srWindow.Left + 1;
-    int longitudTexto = strlen(texto);
-    int espaciosEnBlanco = (anchoConsola - longitudTexto) / 2;
-
-    // Ajusta la posición del cursor en la fila "y" y centra el texto
-    COORD posicionCursor;
-    posicionCursor.X = espaciosEnBlanco;
-    posicionCursor.Y = y - 1;
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), posicionCursor);
-    printf("%s", texto);
-
-}
-
-
-int main()
-{
-    Paciente *raiz = NULL;
-    cargarDatosDesdeArchivoMejorado(&raiz);
-    int dniMostrar, dniAEliminar, dniConsulta;
-    int opcion;
-    char entrada[100];
-    int entradaValida;
-
-    char fechaDesde[11];
-    char fechaHasta[11];
-
-    do
-    {
-        system("cls");
-
-        int fila = 5; // Fila donde se centrará el texto
-        centrarTextoAuto("----------------------------------------------", fila++);
-        centrarTextoAuto("----------------MENU PRINCIPAL----------------", fila++);
-        centrarTextoAuto("----------------------------------------------", fila++);
-        centrarTextoAuto("1. Agregar paciente", fila++);
-        centrarTextoAuto("2. Modificar paciente", fila++);
-        centrarTextoAuto("3. Eliminar paciente", fila++);
-        centrarTextoAuto("4. Agregar ingreso", fila++);
-        centrarTextoAuto("5. Modificar ingreso", fila++);
-        centrarTextoAuto("6. Eliminar ingreso", fila++);
-        centrarTextoAuto("7. Mostrar Paciente e Ingreso", fila++);
-        centrarTextoAuto("8. Mostrar todos los Pacientes e Ingresos", fila++);
-        centrarTextoAuto("9. Filtrar ingresos por fecha", fila++);
-        centrarTextoAuto("10. Mostrar un Paciente", fila++);
-        centrarTextoAuto("11. Todos los Ingresos por Paciente", fila++);
-        centrarTextoAuto("12. Consultar un Ingreso", fila++);
-        centrarTextoAuto("13. Agregar practica a un Ingreso", fila++);
-        centrarTextoAuto("14. Modificar practica de un Ingreso", fila++);
-        centrarTextoAuto("15. Eliminar practica de un Ingreso", fila++);
-        centrarTextoAuto("16. Buscar practica que comiencen con...", fila++);
-        centrarTextoAuto("17. Salir\n", fila++);
-
-        centrarTextoAuto("Seleccione una opcion: ", fila);
-
-        do
-        {
-            COORD posicionCursor;
-            posicionCursor.X = (anchoConsola - 1) / 2;
-            posicionCursor.Y = fila;
-            SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), posicionCursor);
-
-
-            fgets(entrada, sizeof(entrada), stdin);
-            entradaValida = sscanf(entrada, "%d", &opcion);
-
-            if (entradaValida != 1 || strcspn(entrada, "\n") != strlen(entrada) - 1)
-            {
-                entradaValida = 0;
-                centrarTextoAuto("Por favor ingrese un numero valido\n", fila);
-                centrarTextoAuto("Seleccione una opcion: ", ++fila);
-            }
-        }
-        while (!entradaValida);
-
-        system("cls");
-
-        switch (opcion)
-        {
-        case 1:
-            agregarPacienteMenu(&raiz);
-            guardarDatosEnArchivo(&raiz);
-            break;
-        case 2:
-            modificarPacienteMenu(raiz);
-            guardarDatosEnArchivo(&raiz);
-            break;
-        case 3:
-            printf("Ingrese el DNI del paciente a eliminar: ");
-            scanf("%d", &dniAEliminar);
-            eliminarPaciente(raiz, dniAEliminar);
-            guardarDatosEnArchivo(&raiz);
-            break;
-        case 4:
-            agregarIngresoMenu(raiz);
-            guardarDatosEnArchivo(&raiz);
-            break;
-        case 5:
-            modificarIngresoMenu(raiz);
-            guardarDatosEnArchivo(&raiz);
-            break;
-        case 6:
-            eliminarIngresoMenu(raiz);
-            guardarDatosEnArchivo(raiz);
-            break;
-        case 7:
-            mostrarPacienteYIngresosConFiltrado(raiz);
-            guardarDatosEnArchivo(raiz);
-            break;
-        case 8:
-            mostrarTodosLosPacientesYIngresos(raiz);
-            guardarDatosEnArchivo(raiz);
-            break;
-        case 9:
-            printf("Ingrese la fecha de inicio (YYYY-MM-DD): ");
-            scanf("%s", fechaDesde);
-            printf("Ingrese la fecha de fin (YYYY-MM-DD): ");
-            scanf("%s", fechaHasta);
-            mostrarIngresosEnRangoYDatosPacienteMenu(raiz, fechaDesde, fechaHasta);
-            guardarDatosEnArchivo(raiz);
-            break;
-        case 10:
-            printf("Ingrese el DNI del paciente a consultar: ");
-            scanf("%d", &dniConsulta);
-            consultarPacientePorDNI(raiz, dniConsulta);
-            guardarDatosEnArchivo(raiz);
-            break;
-        case 11:
-            listarIngresosPorPaciente(raiz);
-            guardarDatosEnArchivo(raiz);
-            break;
-        case 12:
-            printf("Ingrese el numero de Ingreso (0 para buscar por fecha): ");
-            int nroIngreso;
-            char fechaIngreso[11];
-            scanf("%d", &nroIngreso);
-            if (nroIngreso == 0)
-            {
-                printf("Ingrese la Fecha de Ingreso (YYYY-MM-DD): ");
-                scanf("%s", fechaIngreso);
-                consultarIngreso(raiz, 0, fechaIngreso);
-            }
-            else
-            {
-                consultarIngreso(raiz, nroIngreso, "");
-            }
-            break;
-        case 13:
-            agregarPracticaMenu(raiz);
-            guardarDatosEnArchivo(&raiz);
-            break;
-        case 14:
-            modificarPracticaMenu(raiz);
-            guardarDatosEnArchivo(&raiz);
-            break;
-        case 15:
-            eliminarPracticaMenu(raiz);
-            guardarDatosEnArchivo(&raiz);
-            break;
-        case 16:
-            buscarPracticasMenu(raiz);
-
-            break;
-        case 17:
-            printf("Saliendo del programa...\n");
-            guardarDatosEnArchivo(raiz);
-            break;
-        default:
-            centrarTextoAuto("Opcion no valida. Por favor, intente de nuevo.\n", fila);
-        }
-        system("pause");
-    }
-    while (opcion != 17);
-    guardarDatosEnArchivo(raiz);
-
-    return 0;
-}
-
-
+#include "Paciente.h"
 ///------------------------- FUNCIONES PACIENTE -------------------------
 Paciente *crearPaciente(char *ApellidoNombre, int Edad, int Dni, char *Direccion, char *Telefono)
 {
@@ -448,7 +162,6 @@ void mostrarPacientesEIngresosOrdenados(NodoLista *lista)
     }
 }
 
-
 ///------------------------- FUNCIONES LABORATORIO -------------------------
 IngresoLaboratorio *crearIngreso(int NroIngreso, char *FechaIngreso, char *FechaRetiro, int DniPaciente, int MatriculaProfesional)
 {
@@ -576,6 +289,7 @@ void bajaIngreso(Paciente *raiz, int dniPaciente, int nroIngreso)
 }
 
 // Función auxiliar para realizar la búsqueda
+int ingresoEncontrado = 0;
 void buscarYVerificacionIngreso(Paciente *raiz, int nroIngreso, const char *fechaIngreso)
 {
     if (raiz == NULL || ingresoEncontrado)
@@ -621,7 +335,6 @@ void buscarYVerificacionIngreso(Paciente *raiz, int nroIngreso, const char *fech
     buscarYVerificacionIngreso(raiz->derecha, nroIngreso, fechaIngreso);
 }
 
-
 ///------------------------- FUNCIONES PACIENTE MENU -------------------------
 void agregarPacienteMenu(Paciente **raiz)
 {
@@ -630,14 +343,35 @@ void agregarPacienteMenu(Paciente **raiz)
     int Dni;
     char Direccion[31];
     char Telefono[16];
+    int nombreValido = 0;
 
-    printf("Ingrese el apellido y nombre del paciente: ");
-    fflush(stdin);
-    gets(&ApellidoNombre);
+    // Validar nombre y apellido del paciente
+    do
+    {
+        printf("Ingrese el apellido y nombre del paciente: ");
+        fflush(stdin);
+        gets(ApellidoNombre);
+
+        nombreValido = verificarApeYNombre(ApellidoNombre);
+
+        if (!nombreValido)
+        {
+            printf("Nombre y apellido no valido. Intente nuevamente.\n");
+        }
+    }
+    while (!nombreValido);
+
 
     printf("Ingrese la edad del paciente: ");
     fflush(stdin);
     scanf("%d", &Edad);
+    if(Edad < 0 || Edad > 120)
+    {
+        printf("Ingrese una edad valida.\n");
+        fflush(stdin);
+        scanf("%d", &Edad);
+    }
+
 
     printf("Ingrese el DNI del paciente: ");
     fflush(stdin);
@@ -645,14 +379,14 @@ void agregarPacienteMenu(Paciente **raiz)
 
     printf("Ingrese la direccion del paciente: ");
     fflush(stdin);
-    gets(&Direccion);
+    gets(Direccion);
 
     printf("Ingrese el telefono del paciente: ");
     fflush(stdin);
-    gets(&Telefono);
+    gets(Telefono);
 
     Paciente *nuevoPaciente = crearPaciente(ApellidoNombre, Edad, Dni, Direccion, Telefono);
-    altaPaciente(raiz, nuevoPaciente); // Agrega el paciente al árbol
+    altaPaciente(raiz, nuevoPaciente);
 }
 
 void modificarPacienteMenu(Paciente *raiz)
@@ -704,7 +438,6 @@ void eliminarPaciente(Paciente *raiz, int dni)
         {
             bajaPaciente(raiz, dni); // Marca el paciente como eliminado
             printf("El paciente ha sido eliminado correctamente.\n");
-            guardarDatosEnArchivo(&raiz); // Guarda los cambios en el archivo
         }
         else
         {
@@ -779,6 +512,7 @@ void agregarIngresoMenu(Paciente *raiz)
     char fechaIngreso[11];
     char fechaRetiro[11];
     int matriculaProfesional;
+    int fechaValida = 0;
 
     printf("Ingrese el DNI del paciente: ");
     scanf("%d", &dniPaciente);
@@ -790,13 +524,34 @@ void agregarIngresoMenu(Paciente *raiz)
         fflush(stdin);
         scanf("%d", &nroIngreso);
 
-        printf("Ingrese la fecha de ingreso (YYYY-MM-DD): ");
-        fflush(stdin);
-        scanf("%s", fechaIngreso);
+        do
+        {
+            printf("Ingrese la fecha de ingreso (DD-MM-YYYY): ");
+            fflush(stdin);
+            scanf("%s", fechaIngreso);
 
-        printf("Ingrese la fecha de retiro (YYYY-MM-DD): ");
-        fflush(stdin);
-        scanf("%s", fechaRetiro);
+            fechaValida = validarFecha(fechaIngreso);
+            if (!fechaValida)
+            {
+                printf("Fecha invalida. Intente nuevamente.\n");
+            }
+        }
+        while (!fechaValida);
+
+        fechaValida = 0; // Reiniciar el indicador de validez para la siguiente fecha
+        do
+        {
+            printf("Ingrese la fecha de retiro (DD-MM-YYYY): ");
+            fflush(stdin);
+            scanf("%s", fechaRetiro);
+
+            fechaValida = validarFecha(fechaRetiro);
+            if (!fechaValida)
+            {
+                printf("Fecha invalida. Intente nuevamente.\n");
+            }
+        }
+        while (!fechaValida);
 
         printf("Ingrese la Matricula profesional: ");
         fflush(stdin);
@@ -833,12 +588,12 @@ void modificarIngresoMenu(Paciente *raiz)
     fflush(stdin);
     scanf("%i", &nuevoNroIngreso);
 
-    // Aquí puedes agregar código para obtener los nuevos datos de ingreso
-    printf("Ingrese la nueva fecha de ingreso (YYYY-MM-DD): ");
+
+    printf("Ingrese la nueva fecha de ingreso (DD-MM-YYYY): ");
     fflush(stdin);
     scanf("%s", nuevaFechaIngreso);
 
-    printf("Ingrese la nueva fecha de retiro (YYYY-MM-DD): ");
+    printf("Ingrese la nueva fecha de retiro (DD-MM-YYYY): ");
     fflush(stdin);
     scanf("%s", nuevaFechaRetiro);
 
@@ -1027,7 +782,7 @@ void mostrarPacienteYIngresosConFiltrado(Paciente *raiz)
         break;
     case 3:
         // Filtrar por fecha de ingreso
-        printf("Ingrese la fecha de inicio (YYYY-MM-DD): ");
+        printf("Ingrese la fecha de inicio (DD-MM-YYYY): ");
         scanf("%s", &fechaDesde);
         system("cls");
         mostrarPacienteYIngresosPorFecha(raiz,fechaDesde);
@@ -1132,7 +887,6 @@ void cargarDatosDesdeArchivoMejorado(Paciente **raiz)
     FILE *archivo = fopen("datos.txt", "r");
     if (archivo == NULL)
     {
-        perror("Error al abrir el archivo");
         return;
     }
 
@@ -1193,7 +947,6 @@ void cargarDatosDesdeArchivoMejorado(Paciente **raiz)
 
     fclose(archivo);
 }
-
 
 ///------------------------- FUNCIONES PRACTICA POR INGREGO -------------------------
 // Función para crear una nueva Practica
@@ -1434,5 +1187,67 @@ void buscarPracticasMenu(Paciente *raiz)
     printf("Ingrese el prefijo para filtrar las Practicas (por ejemplo 'he'): ");
     scanf("%255s", prefijo);  // Usar %255s para prevenir desbordamiento de búfer
     buscarPracticasConPrefijo(raiz, prefijo);
+}
+
+///AUX
+int validarFecha(char fecha[])
+{
+    int fechaValida = 1;
+    int exitoConversionFecha = 0;
+    int longitudFecha = strlen(fecha);
+    int i = 0;
+
+    if (longitudFecha == 0 || longitudFecha < 6 || longitudFecha > 11 || fecha[0] == ' ')
+    {
+        fechaValida = 0;
+    }
+    else
+    {
+        while (i < longitudFecha && fechaValida == 1)
+        {
+            if ((fecha[i] >= '0' && fecha[i] <= '9') || (fecha[i] == '/') || (fecha[i] == '-'))
+            {
+                i++;
+            }
+            else
+            {
+                fechaValida = 0;
+            }
+        }
+    }
+
+    if (longitudFecha != 0 && fechaValida == 1)
+    {
+        exitoConversionFecha = convertirFecha(fecha);
+
+        if (exitoConversionFecha == 1)
+        {
+            fechaValida = 1;
+        }
+        else
+        {
+            fechaValida = 0;
+        }
+    }
+
+    return fechaValida;
+}
+
+int convertirFecha(char fecha[])
+{
+    int fechaValida = 0;
+    int dia = 0;
+    int mes = 0;
+    int year = 0;
+
+    if (sscanf(fecha, "%d/%d/%d", &dia, &mes, &year) == 3 || sscanf(fecha, "%d-%d-%d", &dia, &mes, &year) == 3)
+    {
+        if ((dia >= 1 && dia <= 31) && (mes >= 1 && mes <= 12) && ((year >= 2023 && year <= 2033) || (year >= 23 && year <= 33)))
+        {
+            fechaValida = 1;
+        }
+    }
+
+    return fechaValida;
 }
 
