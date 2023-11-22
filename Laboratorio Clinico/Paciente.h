@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-// Definición de la estructura Practica
+// Definiciï¿½n de la estructura Practica
 typedef struct Practica
 {
     int NroPractica;
@@ -12,7 +12,7 @@ typedef struct Practica
     struct Practica *siguiente; // Apuntador a la siguiente Practica en la lista
 } Practica;
 
-// Definición de las estructuras
+// Definiciï¿½n de las estructuras
 typedef struct IngresoLaboratorio
 {
     int NroIngreso;
@@ -33,7 +33,7 @@ typedef struct Paciente
     char Direccion[31];
     char Telefono[16];
     int Eliminado; // 0 para no eliminado, 1 para eliminado
-    struct Paciente *izquierda, *derecha; // Apuntadores al hijo izquierdo y derecho en el árbol
+    struct Paciente *izquierda, *derecha; // Apuntadores al hijo izquierdo y derecho en el ï¿½rbol
     IngresoLaboratorio *ingresos; // Apuntador al primer ingreso en la lista de ingresos
 } Paciente;
 

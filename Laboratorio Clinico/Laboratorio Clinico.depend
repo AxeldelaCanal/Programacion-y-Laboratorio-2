@@ -1,0 +1,65 @@
+# depslib dependency file v1.0
+1700682491 source:c:\users\gc\onedrive\escritorio\proyectofinal21-11\laboratorio clinico\empleado.c
+	"Empleado.h"
+
+1700604089 c:\users\gc\onedrive\escritorio\proyectofinal21-11\laboratorio clinico\empleado.h
+	<stdio.h>
+	<stdlib.h>
+
+1700604280 source:c:\users\gc\onedrive\escritorio\proyectofinal21-11\laboratorio clinico\main.c
+	"Empleado.h"
+	"Paciente.h"
+	"Menu.h"
+	<windows.h>
+
+1700604257 c:\users\gc\onedrive\escritorio\proyectofinal21-11\laboratorio clinico\paciente.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1700604167 c:\users\gc\onedrive\escritorio\proyectofinal21-11\laboratorio clinico\menu.h
+
+1700680804 source:c:\users\gc\onedrive\escritorio\proyectofinal21-11\laboratorio clinico\menu.c
+	"Menu.h"
+	"Paciente.h"
+	"Empleado.h"
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<windows.h>
+
+1700681311 source:c:\users\gc\onedrive\escritorio\proyectofinal21-11\laboratorio clinico\paciente.c
+	"Paciente.h"
+
+1700682492 source:c:\users\axelu\onedrive\escritorio\programacion y laboratorio 2\laboratorio clinico\empleado.c
+	"Empleado.h"
+
+1700604090 c:\users\axelu\onedrive\escritorio\programacion y laboratorio 2\laboratorio clinico\empleado.h
+	<stdio.h>
+	<stdlib.h>
+
+1700604282 source:c:\users\axelu\onedrive\escritorio\programacion y laboratorio 2\laboratorio clinico\main.c
+	"Empleado.h"
+	"Paciente.h"
+	"Menu.h"
+	<windows.h>
+
+1700604258 c:\users\axelu\onedrive\escritorio\programacion y laboratorio 2\laboratorio clinico\paciente.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1700604168 c:\users\axelu\onedrive\escritorio\programacion y laboratorio 2\laboratorio clinico\menu.h
+
+1700682668 source:c:\users\axelu\onedrive\escritorio\programacion y laboratorio 2\laboratorio clinico\menu.c
+	"Menu.h"
+	"Paciente.h"
+	"Empleado.h"
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<windows.h>
+
+1700681312 source:c:\users\axelu\onedrive\escritorio\programacion y laboratorio 2\laboratorio clinico\paciente.c
+	"Paciente.h"
+

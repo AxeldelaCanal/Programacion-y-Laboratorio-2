@@ -8,7 +8,7 @@ empleados_laboratorio registrarEmpleado()
     int flagDNI = 0, nombreValido = 0;
     int flag = 0;
 
-    // Validaci髇 del DNI
+    // Validacion del DNI
     do
     {
         printf("Ingrese DNI: \n");
@@ -24,7 +24,7 @@ empleados_laboratorio registrarEmpleado()
     }
     while (flagDNI != 0);
 
-    // Validaci髇 del nombre y apellido
+    // Validacion del nombre y apellido
     do
     {
         printf("Ingrese apellido y nombre: \n");
@@ -41,7 +41,7 @@ empleados_laboratorio registrarEmpleado()
     }
     while (!nombreValido);
 
-        do
+    do
     {
         printf("Ingrese usuario: \n");
         fflush(stdin);
@@ -65,19 +65,23 @@ empleados_laboratorio registrarEmpleado()
         printf("Ingrese perfil: (administrativo / administrador / profesional)\n");
         fflush(stdin);
         scanf("%s", empleado.perfil);
-    } while(comprobarPerfilValido(empleado.perfil));
+    }
+    while(comprobarPerfilValido(empleado.perfil));
 
     return empleado;
 }
 
-int comprobarPerfilValido(char perfil[]) {
+int comprobarPerfilValido(char perfil[])
+{
     int flag = 1;
 
-    if (strcmp(perfil, "administrativo") == 0 || strcmp(perfil, "administrador") == 0 || strcmp(perfil, "profesional") == 0) {
+    if (strcmp(perfil, "administrativo") == 0 || strcmp(perfil, "administrador") == 0 || strcmp(perfil, "profesional") == 0)
+    {
         flag = 0;
     }
 
-    if(flag) {
+    if(flag)
+    {
         printf("Debes ingresar un perfil valido. \n");
     }
 
@@ -129,18 +133,50 @@ int comprobarUsuarioRepetido(char usuario[])
     return flag;
 }
 
-//Funcion para guardar el nuevo empleado en el archivo
+// Funci贸n para comparar dos empleados por su nombre
+int compararEmpleados(const void *a, const void *b)
+{
+    empleados_laboratorio *empleadoA = (empleados_laboratorio *)a;
+    empleados_laboratorio *empleadoB = (empleados_laboratorio *)b;
+    return strcmp(empleadoA->apellidoYnombre, empleadoB->apellidoYnombre);
+}
+
 void guardarEmpleadoEnArchivo(empleados_laboratorio empleado)
 {
-    FILE *archivoE = fopen("empleados.bin", "ab");
+    FILE *archivoE = fopen("empleados.bin", "rb");
+    empleados_laboratorio empleados[100];  // Asumiendo que no hay m谩s de 100 empleados
+    int numEmpleados = 0;
 
+    if (archivoE != NULL)
+    {
+        while (fread(&empleados[numEmpleados], sizeof(empleados_laboratorio), 1, archivoE) == 1)
+        {
+            numEmpleados++;
+        }
+        fclose(archivoE);
+    }
+
+    // Agregar el nuevo empleado
+    empleados[numEmpleados] = empleado;
+    numEmpleados++;
+
+    // Ordenar la lista de empleados alfabeticamente
+    /*La funci贸n qsort en C se utiliza para ordenar arreglos. Esta funci贸n esta presente en la biblioteca stdlib.h y ordena un arreglo internamente, es decir, lo modifica.
+    La sintaxis de qsort es la siguiente: qsort (arreglo, longitud del arreglo, tama帽o de cada elemento del arreglo, funci贸n que compara)*/
+    qsort(empleados, numEmpleados, sizeof(empleados_laboratorio), compararEmpleados);
+
+    // Escribir todos los empleados de nuevo en el archivo
+    archivoE = fopen("empleados.bin", "wb");
     if (archivoE == NULL)
     {
         printf("Error al abrir el archivo. \n");
     }
     else
     {
-        fwrite(&empleado, sizeof(empleados_laboratorio), 1, archivoE);
+        for (int i = 0; i < numEmpleados; i++)
+        {
+            fwrite(&empleados[i], sizeof(empleados_laboratorio), 1, archivoE);
+        }
         fclose(archivoE);
         printf("Empleado registrado exitosamente.\n");
     }
@@ -160,7 +196,7 @@ void mostrarArchivoDeEmpleados()
             printf("DNI: %i \n", aux.dni);
             printf("Apellido y nombre: %s \n", aux.apellidoYnombre);
             printf("Usuario: %s \n", aux.usuario);
-            printf("Contrase馻: %s \n", aux.contrasenia);
+            printf("Contrasenia: %s \n", aux.contrasenia);
             printf("Perfil: %s \n", aux.perfil);
             printf("==========================================\n");
         }
@@ -182,7 +218,7 @@ void mostrarArchivoDeEmpleadosConAsteriscos()
             printf("Apellido y nombre: %s \n", aux.apellidoYnombre);
             printf("Usuario: %s \n", aux.usuario);
 
-            // Mostrar la contrase馻 como asteriscos
+            // Mostrar la contrasenia como asteriscos
             printf("Contrasenia: ");
             for (size_t i = 0; i < strlen(aux.contrasenia); i++)
             {
@@ -231,7 +267,7 @@ void buscarDniSolicitado(int dniABuscar)
                 printf("DNI: %i \n", aux.dni);
                 printf("Apellido y nombre: %s \n", aux.apellidoYnombre);
                 printf("Usuario: %s \n", aux.usuario);
-                printf("Contrase馻: %s \n", aux.contrasenia);
+                printf("Contrasenia: %s \n", aux.contrasenia);
                 printf("Perfil: %s \n", aux.perfil);
                 printf("==========================================\n");
 
@@ -246,14 +282,13 @@ void buscarDniSolicitado(int dniABuscar)
     }
 }
 
-///AUXILIAR:
-// Funci髇 para validar el apellido y nombre del empleado
+// Funcion para validar el apellido y nombre del empleado
 int verificarApeYNombre(const char *apeYnombreEmpleado)
 {
     int apeYnombreValido = 1;
     int longitud = strlen(apeYnombreEmpleado); // Obtener la longitud del nombre y el apellido
 
-    // Validar la longitud y el primer car醕ter
+    // Validar la longitud y el primer caracter
     if ((longitud == 0) || (apeYnombreEmpleado[0] == ' ') || (longitud < 3) || (longitud > 30))
     {
         apeYnombreValido = 0;

@@ -15,7 +15,7 @@ Paciente *crearPaciente(char *ApellidoNombre, int Edad, int Dni, char *Direccion
     return nuevoPaciente;
 }
 
-// Función para buscar un paciente
+// Funcion para buscar un paciente
 Paciente *buscarPaciente(Paciente *raiz, int dni)
 {
     if (raiz == NULL)
@@ -44,7 +44,7 @@ Paciente *buscarPacientePorNumeroIngreso(Paciente *raiz, int numeroIngreso)
         return NULL; // No se encontro el paciente
     }
 
-    // Recursivamente, busca en el lado izquierdo y derecho del árbol
+    // Recursivamente, busca en el lado izquierdo y derecho del ï¿½rbol
     if (numeroIngreso == raiz->ingresos->NroIngreso)
     {
         return raiz; // Se encontro el paciente con el numero de ingreso
@@ -59,7 +59,7 @@ Paciente *buscarPacientePorNumeroIngreso(Paciente *raiz, int numeroIngreso)
     }
 }
 
-// Función para dar de alta un paciente
+// Funcion para dar de alta un paciente
 void altaPaciente(Paciente **raiz, Paciente *nuevoPaciente)
 {
     if (*raiz == NULL)
@@ -80,7 +80,7 @@ void altaPaciente(Paciente **raiz, Paciente *nuevoPaciente)
     }
 }
 
-// Función para modificar un paciente
+// Funcion para modificar un paciente
 void modificarPaciente(Paciente *raiz, int dni, char *nuevoApellidoNombre, int nuevaEdad, char *nuevaDireccion, char *nuevoTelefono)
 {
     Paciente *paciente = buscarPaciente(raiz, dni);
@@ -97,7 +97,7 @@ void modificarPaciente(Paciente *raiz, int dni, char *nuevoApellidoNombre, int n
     }
 }
 
-// Función para dar de baja un paciente
+// Funcion para dar de baja un paciente
 void bajaPaciente(Paciente *raiz, int dni)
 {
     Paciente *paciente = buscarPaciente(raiz, dni);
@@ -113,14 +113,14 @@ void bajaPaciente(Paciente *raiz, int dni)
     }
 }
 
-// Función para insertar en lista ordenada
+// Funcion para insertar en lista ordenada
 void insertarOrdenado(NodoLista **cabeza, Paciente *paciente)
 {
     NodoLista *nuevoNodo = (NodoLista *)malloc(sizeof(NodoLista));
     nuevoNodo->paciente = paciente;
     nuevoNodo->siguiente = NULL;
 
-    // Insertar en la posición correcta
+    // Insertar en la posiciï¿½n correcta
     if (*cabeza == NULL || strcmp((*cabeza)->paciente->ApellidoNombre, paciente->ApellidoNombre) > 0)
     {
         nuevoNodo->siguiente = *cabeza;
@@ -138,7 +138,7 @@ void insertarOrdenado(NodoLista **cabeza, Paciente *paciente)
     }
 }
 
-// Función para recorrer el árbol y llenar la lista
+// Funcion para recorrer el arbol y llenar la lista
 void recorrerYOrdenar(Paciente *raiz, NodoLista **listaOrdenada)
 {
     if (raiz != NULL)
@@ -152,7 +152,7 @@ void recorrerYOrdenar(Paciente *raiz, NodoLista **listaOrdenada)
     }
 }
 
-// Función para mostrar pacientes e ingresos desde una lista
+// Funcion para mostrar pacientes e ingresos desde una lista
 void mostrarPacientesEIngresosOrdenados(NodoLista *lista)
 {
     while (lista != NULL)
@@ -191,10 +191,10 @@ void mostrarIngresosPorNumero(IngresoLaboratorio *ingresos, int numeroIngreso)
         if (!actual->Eliminado && actual->NroIngreso == numeroIngreso)
         {
             encontrados++;
-            printf("numero de Ingreso: %d\n", actual->NroIngreso);
+            printf("Numero de Ingreso: %d\n", actual->NroIngreso);
             printf("Fecha de Ingreso: %s\n", actual->FechaIngreso);
             printf("Fecha de Retiro: %s\n", actual->FechaRetiro);
-            printf("Matrícula Profesional: %d\n\n", actual->MatriculaProfesional);
+            printf("Matricula Profesional: %d\n\n", actual->MatriculaProfesional);
         }
         actual = actual->siguiente;
     }
@@ -211,7 +211,7 @@ void agregarIngreso(Paciente *paciente, IngresoLaboratorio *ingreso)
     paciente->ingresos = ingreso;
 }
 
-// Función para dar de alta un ingreso
+// Funcion para dar de alta un ingreso
 void altaIngreso(Paciente *raiz, int dniPaciente, IngresoLaboratorio *nuevoIngreso)
 {
     Paciente *pacienteEncontrado = buscarPaciente(raiz, dniPaciente);
@@ -225,7 +225,7 @@ void altaIngreso(Paciente *raiz, int dniPaciente, IngresoLaboratorio *nuevoIngre
     }
 }
 
-// Función para buscar un ingreso
+// Funcion para buscar un ingreso
 IngresoLaboratorio *buscarIngreso(Paciente *paciente, int nroIngreso)
 {
     IngresoLaboratorio *ingreso = paciente->ingresos;
@@ -240,7 +240,7 @@ IngresoLaboratorio *buscarIngreso(Paciente *paciente, int nroIngreso)
     return NULL;
 }
 
-// Función para modificar un ingreso
+// Funcion para modificar un ingreso
 void modificarIngreso(Paciente *raiz, int dniPaciente, int nroIngreso, char *nuevaFechaIngreso, char *nuevaFechaRetiro, int nuevaMatricula, int numeroIngreso)
 {
     Paciente *paciente = buscarPaciente(raiz, dniPaciente);
@@ -265,7 +265,7 @@ void modificarIngreso(Paciente *raiz, int dniPaciente, int nroIngreso, char *nue
     }
 }
 
-// Función para dar de baja un ingreso
+// Funcion para dar de baja un ingreso
 void bajaIngreso(Paciente *raiz, int dniPaciente, int nroIngreso)
 {
     Paciente *paciente = buscarPaciente(raiz, dniPaciente);
@@ -288,7 +288,7 @@ void bajaIngreso(Paciente *raiz, int dniPaciente, int nroIngreso)
     }
 }
 
-// Función auxiliar para realizar la búsqueda
+// Funcion auxiliar para realizar la bï¿½squeda
 int ingresoEncontrado = 0;
 void buscarYVerificacionIngreso(Paciente *raiz, int nroIngreso, const char *fechaIngreso)
 {
@@ -297,7 +297,7 @@ void buscarYVerificacionIngreso(Paciente *raiz, int nroIngreso, const char *fech
         return;
     }
 
-    // Búsqueda en el subárbol izquierdo
+    // Bï¿½squeda en el subï¿½rbol izquierdo
     buscarYVerificacionIngreso(raiz->izquierda, nroIngreso, fechaIngreso);
 
     if (!raiz->Eliminado)
@@ -331,19 +331,15 @@ void buscarYVerificacionIngreso(Paciente *raiz, int nroIngreso, const char *fech
         }
     }
 
-    // Búsqueda en el subárbol derecho
+    // Bï¿½squeda en el subï¿½rbol derecho
     buscarYVerificacionIngreso(raiz->derecha, nroIngreso, fechaIngreso);
 }
 
 ///------------------------- FUNCIONES PACIENTE MENU -------------------------
 void agregarPacienteMenu(Paciente **raiz)
 {
-    char ApellidoNombre[41];
-    int Edad;
-    int Dni;
-    char Direccion[31];
-    char Telefono[16];
-    int nombreValido = 0;
+    char ApellidoNombre[41], Edad[5], Dni[10], Direccion[31], Telefono[16];
+    int nombreValido = 0, dniValido = 0, edadValida = 0, telefonoValido = 0;
 
     // Validar nombre y apellido del paciente
     do
@@ -361,74 +357,212 @@ void agregarPacienteMenu(Paciente **raiz)
     }
     while (!nombreValido);
 
-
-    printf("Ingrese la edad del paciente: ");
-    fflush(stdin);
-    scanf("%d", &Edad);
-    if(Edad < 0 || Edad > 120)
+    // Validar edad del paciente
+    do
     {
-        printf("Ingrese una edad valida.\n");
+        printf("Ingrese la edad del paciente: ");
         fflush(stdin);
-        scanf("%d", &Edad);
+        scanf("%s", Edad);
+
+        edadValida = 1;
+        for(int i = 0; i < strlen(Edad); i++)
+        {
+            if(!isdigit(Edad[i]))
+            {
+                edadValida = 0;
+                break;
+            }
+        }
+
+        if(!edadValida || atoi(Edad) <= 0 || atoi(Edad) >= 120)
+        {
+            printf("Ingrese una edad valida.\n");
+            edadValida = 0;
+        }
     }
+    while (!edadValida);
 
+    // Validar DNI del paciente
+    do
+    {
+        printf("Ingrese el DNI del paciente: ");
+        fflush(stdin);
+        scanf("%s", Dni);
 
-    printf("Ingrese el DNI del paciente: ");
-    fflush(stdin);
-    scanf("%d", &Dni);
+        dniValido = 1;
+        for(int i = 0; i < 8; i++)
+        {
+            if(!isdigit(Dni[i]))
+            {
+                dniValido = 0;
+                break;
+            }
+        }
+
+        if(!dniValido)
+        {
+            printf("Ingrese un DNI valido.\n");
+        }
+    }
+    while (!dniValido);
+
 
     printf("Ingrese la direccion del paciente: ");
     fflush(stdin);
     gets(Direccion);
 
-    printf("Ingrese el telefono del paciente: ");
-    fflush(stdin);
-    gets(Telefono);
+    // Validar Telefono del paciente
+    do
+    {
+        printf("Ingrese el telefono del paciente: ");
+        fflush(stdin);
+        scanf("%s", Telefono);
 
-    Paciente *nuevoPaciente = crearPaciente(ApellidoNombre, Edad, Dni, Direccion, Telefono);
+        telefonoValido = 1;
+        if(strlen(Telefono) != 10)
+        {
+            telefonoValido = 0;
+        }
+        else
+        {
+            for(int i = 0; i < 10; i++)
+            {
+                if(!isdigit(Telefono[i]))
+                {
+                    telefonoValido = 0;
+                    break;
+                }
+            }
+        }
+        if(!telefonoValido)
+        {
+            printf("Ingrese un numero de telefono valido de 10 digitos.\n");
+        }
+    }
+    while(!telefonoValido);
+
+    Paciente *nuevoPaciente = crearPaciente(ApellidoNombre, atoi(Edad), atoi(Dni), Direccion, Telefono);
     altaPaciente(raiz, nuevoPaciente);
 }
 
 void modificarPacienteMenu(Paciente *raiz)
 {
-    int dni;
-    char nuevoApellidoNombre[41];
-    int nuevaEdad;
-    char nuevaDireccion[31];
-    char nuevoTelefono[16];
+    char dni[10], nuevoApellidoNombre[41], nuevaEdad[5], nuevaDireccion[31], nuevoTelefono[16];
+    int nombreValido = 0, dniValido = 0, edadValida = 0, telefonoValido = 0;
 
-    printf("Ingrese el DNI del paciente a modificar: ");
-    scanf("%d", &dni);
+    // Validar DNI del paciente
+    do
+    {
+        printf("Ingrese el DNI del paciente a modificar: ");
+        fflush(stdin);
+        scanf("%s", dni);
 
-    Paciente *paciente = buscarPaciente(raiz, dni);
+        dniValido = 1;
+        for(int i = 0; i < 8; i++)
+        {
+            if(!isdigit(dni[i]))
+            {
+                dniValido = 0;
+                break;
+            }
+        }
+
+        if(!dniValido)
+        {
+            printf("Ingrese un DNI valido.\n");
+        }
+    }
+    while (!dniValido);
+
+    Paciente *paciente = buscarPaciente(raiz, atoi(dni));
     if (paciente != NULL)
     {
-        printf("Ingrese el nuevo apellido y nombre: ");
-        fflush(stdin);
-        gets(&nuevoApellidoNombre);
+        // Validar nombre y apellido del paciente
+        do
+        {
+            printf("Ingrese el nuevo apellido y nombre: ");
+            fflush(stdin);
+            gets(nuevoApellidoNombre);
 
-        printf("Ingrese la nueva edad: ");
-        fflush(stdin);
-        scanf("%d", &nuevaEdad);
+            nombreValido = verificarApeYNombre(nuevoApellidoNombre);
+
+            if (!nombreValido)
+            {
+                printf("Nombre y apellido no valido. Intente nuevamente.\n");
+            }
+        }
+        while (!nombreValido);
+
+        // Validar edad del paciente
+        do
+        {
+            printf("Ingrese la nueva edad: ");
+            fflush(stdin);
+            scanf("%s", nuevaEdad);
+
+            edadValida = 1;
+            for(int i = 0; i < strlen(nuevaEdad); i++)
+            {
+                if(!isdigit(nuevaEdad[i]))
+                {
+                    edadValida = 0;
+                    break;
+                }
+            }
+
+            if(!edadValida || atoi(nuevaEdad) < 0 || atoi(nuevaEdad) > 120)
+            {
+                printf("Ingrese una edad valida.\n");
+                edadValida = 0;
+            }
+        }
+        while (!edadValida);
 
         printf("Ingrese la nueva direccion: ");
         fflush(stdin);
-        gets(&nuevaDireccion);
+        gets(nuevaDireccion);
 
-        printf("Ingrese el nuevo telefono: ");
-        fflush(stdin);
-        gets(nuevoTelefono);
+        // Validar nÃºmero de telÃ©fono del paciente
+        do
+        {
+            printf("Ingrese el nuevo telefono: ");
+            fflush(stdin);
+            scanf("%s", nuevoTelefono);
 
-        modificarPaciente(raiz, dni, nuevoApellidoNombre, nuevaEdad, nuevaDireccion, nuevoTelefono);
+            telefonoValido = 1;
+            if(strlen(nuevoTelefono) != 10)
+            {
+                telefonoValido = 0;
+            }
+            else
+            {
+                for(int i = 0; i < 10; i++)
+                {
+                    if(!isdigit(nuevoTelefono[i]))
+                    {
+                        telefonoValido = 0;
+                        break;
+                    }
+                }
+            }
+
+            if(!telefonoValido)
+            {
+                printf("Ingrese un numero de telefono valido de 10 digitos.\n");
+            }
+        }
+        while (!telefonoValido);
+
+        modificarPaciente(raiz, atoi(dni), nuevoApellidoNombre, atoi(nuevaEdad), nuevaDireccion, nuevoTelefono);
         printf("Paciente modificado con exito.\n");
     }
     else
     {
-        printf("El paciente con DNI %d no existe.\n", dni);
+        printf("El paciente con DNI %s no existe.\n", dni);
     }
 }
 
-// Función para eliminar un paciente
+// Funcion para eliminar un paciente
 void eliminarPaciente(Paciente *raiz, int dni)
 {
     Paciente *paciente = buscarPaciente(raiz, dni);
@@ -450,13 +584,14 @@ void eliminarPaciente(Paciente *raiz, int dni)
     }
 }
 
-// Función para consultar un paciente por DNI
+// Funcion para consultar un paciente por DNI
 void consultarPacientePorDNI(Paciente *raiz, int dni)
 {
     Paciente *pacienteEncontrado = buscarPaciente(raiz, dni);
     if (pacienteEncontrado != NULL && !pacienteEncontrado->Eliminado)
     {
         printf("\nInformacion del Paciente:\n");
+        printf("==========================================\n");
         printf("DNI: %d\n", pacienteEncontrado->Dni);
         printf("Nombre: %s\n", pacienteEncontrado->ApellidoNombre);
         printf("Edad: %d\n", pacienteEncontrado->Edad);
@@ -472,7 +607,7 @@ void consultarPacientePorDNI(Paciente *raiz, int dni)
     }
 }
 
-// Función para listar ingresos por paciente
+// Funcion para listar ingresos por paciente
 void listarIngresosPorPaciente(Paciente *raiz)
 {
     if (raiz != NULL)
@@ -507,22 +642,66 @@ void listarIngresosPorPaciente(Paciente *raiz)
 ///------------------------- FUNCIONES LABORATORIO MENU -------------------------
 void agregarIngresoMenu(Paciente *raiz)
 {
-    int dniPaciente;
-    int nroIngreso;
-    char fechaIngreso[11];
-    char fechaRetiro[11];
-    int matriculaProfesional;
-    int fechaValida = 0;
+    char dniPaciente[10], nroIngreso[11], fechaIngreso[11], fechaRetiro[11], matriculaProfesional[11];
+    int fechaValida = 0, dniValido = 0, nroIngresoValido = 0, matriculaProfesionalValida = 0;
 
-    printf("Ingrese el DNI del paciente: ");
-    scanf("%d", &dniPaciente);
+    // Validar DNI del paciente
+    do
+    {
+        printf("Ingrese el DNI del paciente: ");
+        fflush(stdin);
+        scanf("%s", dniPaciente);
 
-    Paciente *paciente = buscarPaciente(raiz, dniPaciente);
+        dniValido = 1;
+        if(strlen(dniPaciente) != 8)
+        {
+            dniValido = 0;
+        }
+        else
+        {
+            for(int i = 0; i < 8; i++)
+            {
+                if(!isdigit(dniPaciente[i]))
+                {
+                    dniValido = 0;
+                    break;
+                }
+            }
+        }
+
+        if(!dniValido)
+        {
+            printf("Ingrese un DNI valido de 8 digitos.\n");
+        }
+    }
+    while (!dniValido);
+
+    Paciente *paciente = buscarPaciente(raiz, atoi(dniPaciente));
     if (paciente != NULL)
     {
-        printf("Ingrese el Numero de ingreso: ");
-        fflush(stdin);
-        scanf("%d", &nroIngreso);
+        // Validar nÃºmero de ingreso
+        do
+        {
+            printf("Ingrese el Numero de ingreso: ");
+            fflush(stdin);
+            scanf("%s", nroIngreso);
+
+            nroIngresoValido = 1;
+            for(int i = 0; i < strlen(nroIngreso); i++)
+            {
+                if(!isdigit(nroIngreso[i]))
+                {
+                    nroIngresoValido = 0;
+                    break;
+                }
+            }
+
+            if(!nroIngresoValido)
+            {
+                printf("Ingrese un numero de ingreso valido.\n");
+            }
+        }
+        while (!nroIngresoValido);
 
         do
         {
@@ -553,69 +732,226 @@ void agregarIngresoMenu(Paciente *raiz)
         }
         while (!fechaValida);
 
-        printf("Ingrese la Matricula profesional: ");
-        fflush(stdin);
-        scanf("%d", &matriculaProfesional);
+        // Validar matrÃ­cula profesional
+        do
+        {
+            printf("Ingrese la Matricula profesional: ");
+            fflush(stdin);
+            scanf("%s", matriculaProfesional);
 
-        IngresoLaboratorio *nuevoIngreso = crearIngreso(nroIngreso, fechaIngreso, fechaRetiro, dniPaciente, matriculaProfesional);
-        altaIngreso(raiz, dniPaciente, nuevoIngreso);
+            matriculaProfesionalValida = 1;
+            for(int i = 0; i < strlen(matriculaProfesional); i++)
+            {
+                if(!isdigit(matriculaProfesional[i]))
+                {
+                    matriculaProfesionalValida = 0;
+                    break;
+                }
+            }
+
+            if(!matriculaProfesionalValida)
+            {
+                printf("Ingrese una matricula profesional valida.\n");
+            }
+        }
+        while (!matriculaProfesionalValida);
+
+        IngresoLaboratorio *nuevoIngreso = crearIngreso(atoi(nroIngreso), fechaIngreso, fechaRetiro, atoi(dniPaciente), atoi(matriculaProfesional));
+        altaIngreso(raiz, atoi(dniPaciente), nuevoIngreso);
         printf("Ingreso agregado correctamente.\n");
     }
     else
     {
-        printf("El paciente con DNI %d no existe.\n", dniPaciente);
+        printf("El paciente con DNI %s no existe.\n", dniPaciente);
     }
 }
 
 void modificarIngresoMenu(Paciente *raiz)
 {
-    int dniPaciente;
-    int nroIngreso;
-    int nuevoNroIngreso;
-    char nuevaFechaIngreso[11];
-    char nuevaFechaRetiro[11];
-    int nuevaMatriculaProfesional;
+    char dniPaciente[10], nroIngreso[11], nuevaFechaIngreso[11], nuevaFechaRetiro[11], nuevaMatriculaProfesional[11];
+    int fechaValida = 0, dniValido = 0, nroIngresoValido = 0, matriculaProfesionalValida = 0, nuevoNroIngreso;
 
-    printf("Ingrese el DNI del paciente: ");
-    fflush(stdin);
-    scanf("%d", &dniPaciente);
+    // Validar DNI del paciente
+    do
+    {
+        printf("Ingrese el DNI del paciente: ");
+        fflush(stdin);
+        scanf("%s", dniPaciente);
 
-    printf("Ingrese el Numero de ingreso: ");
-    fflush(stdin);
-    scanf("%d", &nroIngreso);
+        dniValido = 1;
+        if(strlen(dniPaciente) != 8)
+        {
+            dniValido = 0;
+        }
+        else
+        {
+            for(int i = 0; i < 8; i++)
+            {
+                if(!isdigit(dniPaciente[i]))
+                {
+                    dniValido = 0;
+                    break;
+                }
+            }
+        }
+
+        if(!dniValido)
+        {
+            printf("Ingrese un DNI valido de 8 digitos.\n");
+        }
+    }
+    while (!dniValido);
+
+    // Validar nÃºmero de ingreso
+    do
+    {
+        printf("Ingrese el Numero de ingreso: ");
+        fflush(stdin);
+        scanf("%s", nroIngreso);
+
+        nroIngresoValido = 1;
+        for(int i = 0; i < strlen(nroIngreso); i++)
+        {
+            if(!isdigit(nroIngreso[i]))
+            {
+                nroIngresoValido = 0;
+                break;
+            }
+        }
+
+        if(!nroIngresoValido)
+        {
+            printf("Ingrese un numero de ingreso valido.\n");
+        }
+    }
+    while (!nroIngresoValido);
 
     printf("Ingrese el nuevo Numero de ingreso: ");
     fflush(stdin);
     scanf("%i", &nuevoNroIngreso);
 
+    // Validar fecha de ingreso
+    do
+    {
+        printf("Ingrese la nueva fecha de ingreso (DD-MM-YYYY): ");
+        fflush(stdin);
+        scanf("%s", nuevaFechaIngreso);
 
-    printf("Ingrese la nueva fecha de ingreso (DD-MM-YYYY): ");
-    fflush(stdin);
-    scanf("%s", nuevaFechaIngreso);
+        fechaValida = validarFecha(nuevaFechaIngreso);
+        if (!fechaValida)
+        {
+            printf("Fecha invalida. Intente nuevamente.\n");
+        }
+    }
+    while (!fechaValida);
 
-    printf("Ingrese la nueva fecha de retiro (DD-MM-YYYY): ");
-    fflush(stdin);
-    scanf("%s", nuevaFechaRetiro);
+    fechaValida = 0; // Reiniciar el indicador de validez para la siguiente fecha
 
-    printf("Ingrese la nueva Matricula profesional: ");
-    fflush(stdin);
-    scanf("%d", &nuevaMatriculaProfesional);
+    // Validar fecha de retiro
+    do
+    {
+        printf("Ingrese la nueva fecha de retiro (DD-MM-YYYY): ");
+        fflush(stdin);
+        scanf("%s", nuevaFechaRetiro);
 
-    modificarIngreso(raiz, dniPaciente, nroIngreso, nuevaFechaIngreso, nuevaFechaRetiro, nuevaMatriculaProfesional, nuevoNroIngreso);
-    // Verificar si se modificó correctamente o no y mostrar un mensaje apropiado
+        fechaValida = validarFecha(nuevaFechaRetiro);
+        if (!fechaValida)
+        {
+            printf("Fecha invalida. Intente nuevamente.\n");
+        }
+    }
+    while (!fechaValida);
+
+    // Validar matrÃ­cula profesional
+    do
+    {
+        printf("Ingrese la nueva Matricula profesional: ");
+        fflush(stdin);
+        scanf("%s", nuevaMatriculaProfesional);
+
+        matriculaProfesionalValida = 1;
+        for(int i = 0; i < strlen(nuevaMatriculaProfesional); i++)
+        {
+            if(!isdigit(nuevaMatriculaProfesional[i]))
+            {
+                matriculaProfesionalValida = 0;
+                break;
+            }
+        }
+
+        if(!matriculaProfesionalValida)
+        {
+            printf("Ingrese una matricula profesional valida.\n");
+        }
+    }
+    while (!matriculaProfesionalValida);
+
+    modificarIngreso(raiz, atoi(dniPaciente), atoi(nroIngreso), nuevaFechaIngreso, nuevaFechaRetiro, atoi(nuevaMatriculaProfesional), nuevoNroIngreso);
+    printf("Ingreso modificado correctamente.\n");
 }
 
 void eliminarIngresoMenu(Paciente *raiz)
 {
-    int dniPaciente, nroIngreso;
-    printf("Ingrese el DNI del paciente al que pertenece el ingreso: ");
-    scanf("%d", &dniPaciente);
+    char dniPaciente[10], nroIngreso[11];
+    int dniValido = 0, nroIngresoValido = 0;
 
-    printf("Ingrese el Numero de ingreso a eliminar: ");
-    scanf("%d", &nroIngreso);
+    // Validar DNI del paciente
+    do
+    {
+        printf("Ingrese el DNI del paciente al que pertenece el ingreso: ");
+        fflush(stdin);
+        scanf("%s", dniPaciente);
 
-    bajaIngreso(raiz, dniPaciente, nroIngreso);
-    // Verificar si se eliminó el ingreso correctamente o no y mostrar un mensaje apropiado
+        dniValido = 1;
+        if(strlen(dniPaciente) != 8)
+        {
+            dniValido = 0;
+        }
+        else
+        {
+            for(int i = 0; i < 8; i++)
+            {
+                if(!isdigit(dniPaciente[i]))
+                {
+                    dniValido = 0;
+                    break;
+                }
+            }
+        }
+
+        if(!dniValido)
+        {
+            printf("Ingrese un DNI valido de 8 digitos.\n");
+        }
+    }
+    while (!dniValido);
+
+    // Validar nÃºmero de ingreso
+    do
+    {
+        printf("Ingrese el Numero de ingreso a eliminar: ");
+        fflush(stdin);
+        scanf("%s", nroIngreso);
+
+        nroIngresoValido = 1;
+        for(int i = 0; i < strlen(nroIngreso); i++)
+        {
+            if(!isdigit(nroIngreso[i]))
+            {
+                nroIngresoValido = 0;
+                break;
+            }
+        }
+
+        if(!nroIngresoValido)
+        {
+            printf("Ingrese un numero de ingreso valido.\n");
+        }
+    }
+    while (!nroIngresoValido);
+
+    bajaIngreso(raiz, atoi(dniPaciente), atoi(nroIngreso));
+    printf("Ingreso eliminado correctamente.\n");
 }
 
 void mostrarIngresosEnRangoYDatosPacienteMenu(Paciente *raiz, char *fechaDesde, char *fechaHasta)
@@ -632,11 +968,12 @@ void mostrarIngresosEnRangoYDatosPacienteMenu(Paciente *raiz, char *fechaDesde, 
         {
             if (!actual->Eliminado)
             {
-                // Verificar si la fecha de ingreso está dentro del rango
+                // Verificar si la fecha de ingreso estï¿½ dentro del rango
                 if (strcmp(actual->FechaIngreso, fechaDesde) >= 0 && strcmp(actual->FechaIngreso, fechaHasta) <= 0)
                 {
                     // Mostrar los datos del paciente e ingreso
-                    printf("\nDNI: %d\n", raiz->Dni);
+                    printf("\n==========================================\n");
+                    printf("DNI: %d\n", raiz->Dni);
                     printf("Nombre: %s\n", raiz->ApellidoNombre);
                     printf("Edad: %d\n", raiz->Edad);
                     printf("Direccion: %s\n", raiz->Direccion);
@@ -644,7 +981,8 @@ void mostrarIngresosEnRangoYDatosPacienteMenu(Paciente *raiz, char *fechaDesde, 
                     printf("Numero de Ingreso: %d\n", actual->NroIngreso);
                     printf("Fecha de Ingreso: %s\n", actual->FechaIngreso);
                     printf("Fecha de Retiro: %s\n", actual->FechaRetiro);
-                    printf("Matricula Profesional: %d\n\n", actual->MatriculaProfesional);
+                    printf("Matricula Profesional: %d\n", actual->MatriculaProfesional);
+                    printf("==========================================\n");
                 }
             }
             actual = actual->siguiente;
@@ -655,7 +993,7 @@ void mostrarIngresosEnRangoYDatosPacienteMenu(Paciente *raiz, char *fechaDesde, 
     mostrarIngresosEnRangoYDatosPacienteMenu(raiz->derecha, fechaDesde, fechaHasta);
 }
 
-// Función principal para consultar un ingreso específico
+// Funcion principal para consultar un ingreso especï¿½fico
 void consultarIngreso(Paciente *raiz, int nroIngreso, char *fechaIngreso)
 {
     ingresoEncontrado = 0; // Reiniciar la bandera
@@ -668,28 +1006,29 @@ void consultarIngreso(Paciente *raiz, int nroIngreso, char *fechaIngreso)
 }
 
 ///------------------------- FUNCIONES TEMP -------------------------
-// Función para mostrar la información de un paciente y sus ingresos
+// Funcion para mostrar la informaciï¿½n de un paciente y sus ingresos
 void mostrarPacienteYIngresos(Paciente *raiz, int dniPaciente)
 {
     Paciente *paciente = buscarPaciente(raiz, dniPaciente);
     if (paciente != NULL && !paciente->Eliminado)
     {
-        printf("\nDNI: %d\n", paciente->Dni);
+        printf("\n==========================================\n");
+        printf("DNI: %d\n", paciente->Dni);
         printf("Nombre: %s\n", paciente->ApellidoNombre);
         printf("Edad: %d\n", paciente->Edad);
         printf("Direccion: %s\n", paciente->Direccion);
         printf("Telefono: %s\n", paciente->Telefono);
 
-        printf("INGRESO:\n");
+        printf("*INGRESO:\n");
         mostrarIngresos(paciente->ingresos);
     }
     else
     {
-        printf("El paciente con DNI %d no existe o está eliminado.\n", dniPaciente);
+        printf("El paciente con DNI %d no existe o estï¿½ eliminado.\n", dniPaciente);
     }
 }
 
-// Función para mostrar información de un paciente y sus ingresos filtrados por numero de ingreso
+// Funcion para mostrar informaciï¿½n de un paciente y sus ingresos filtrados por numero de ingreso
 void mostrarPacienteYIngresosPorNumeroIngreso(Paciente *raiz, int numeroIngreso)
 {
     Paciente *paciente = buscarPacientePorNumeroIngreso(raiz, numeroIngreso);
@@ -706,11 +1045,11 @@ void mostrarPacienteYIngresosPorNumeroIngreso(Paciente *raiz, int numeroIngreso)
     }
     else
     {
-        printf("No se encontro un paciente con ingreso numero %d o está eliminado.\n", numeroIngreso);
+        printf("No se encontro un paciente con ingreso numero %d o estï¿½ eliminado.\n", numeroIngreso);
     }
 }
 
-// Función para mostrar la información de un paciente y sus ingresos filtrados por fecha de ingreso
+// Funcion para mostrar la informaciï¿½n de un paciente y sus ingresos filtrados por fecha de ingreso
 void mostrarPacienteYIngresosPorFecha(Paciente *raiz, char *fechaDesde)
 {
     if (raiz == NULL)
@@ -725,7 +1064,7 @@ void mostrarPacienteYIngresosPorFecha(Paciente *raiz, char *fechaDesde)
         {
             if (!actual->Eliminado)
             {
-                // Verificar si la fecha de ingreso está dentro del rango
+                // Verificar si la fecha de ingreso estï¿½ dentro del rango
                 if (strcmp(actual->FechaIngreso, fechaDesde) == 0)
                 {
                     // Mostrar los datos del paciente e ingreso
@@ -748,12 +1087,11 @@ void mostrarPacienteYIngresosPorFecha(Paciente *raiz, char *fechaDesde)
     mostrarPacienteYIngresosPorFecha(raiz->derecha, fechaDesde);
 }
 
-// Función para mostrar la información de un paciente y sus ingresos con opciones de filtrado
+// Funcion para mostrar la informaciï¿½n de un paciente y sus ingresos con opciones de filtrado
 void mostrarPacienteYIngresosConFiltrado(Paciente *raiz)
 {
-    char fechaDesde[11];
-    int dniFiltrar;
-    int numeroIngreso = 0;
+    char fechaDesde[11], dniFiltrar[10], numeroIngreso[11];
+    int fechaValida = 0, dniValido = 0, nroIngresoValido = 0;
 
     printf("Seleccione una opcion de filtrado:\n");
     printf("1. Filtrar por DNI\n");
@@ -768,31 +1106,92 @@ void mostrarPacienteYIngresosConFiltrado(Paciente *raiz)
     {
     case 1:
         // Filtrar por DNI
-        printf("Ingrese el DNI a filtrar: ");
-        scanf("%d", &dniFiltrar);
+        do
+        {
+            printf("Ingrese el DNI a filtrar: ");
+            fflush(stdin);
+            scanf("%s", dniFiltrar);
+
+            dniValido = 1;
+            if(strlen(dniFiltrar) != 8)
+            {
+                dniValido = 0;
+            }
+            else
+            {
+                for(int i = 0; i < 8; i++)
+                {
+                    if(!isdigit(dniFiltrar[i]))
+                    {
+                        dniValido = 0;
+                        break;
+                    }
+                }
+            }
+
+            if(!dniValido)
+            {
+                printf("Ingrese un DNI valido de 8 digitos.\n");
+            }
+        }
+        while (!dniValido);
+
         system("cls");
-        mostrarPacienteYIngresos(raiz, dniFiltrar);
+        mostrarPacienteYIngresos(raiz, atoi(dniFiltrar));
         break;
     case 2:
         // Filtrar por numero de ingreso
-        printf("Ingrese el numero de ingreso a filtrar: ");
-        scanf("%d", &numeroIngreso);
+        do
+        {
+            printf("Ingrese el numero de ingreso a filtrar: ");
+            fflush(stdin);
+            scanf("%s", numeroIngreso);
+
+            nroIngresoValido = 1;
+            for(int i = 0; i < strlen(numeroIngreso); i++)
+            {
+                if(!isdigit(numeroIngreso[i]))
+                {
+                    nroIngresoValido = 0;
+                    break;
+                }
+            }
+
+            if(!nroIngresoValido)
+            {
+                printf("Ingrese un numero de ingreso valido.\n");
+            }
+        }
+        while (!nroIngresoValido);
+
         system("cls");
-        mostrarPacienteYIngresosPorNumeroIngreso(raiz, numeroIngreso);
+        mostrarPacienteYIngresosPorNumeroIngreso(raiz, atoi(numeroIngreso));
         break;
     case 3:
         // Filtrar por fecha de ingreso
-        printf("Ingrese la fecha de inicio (DD-MM-YYYY): ");
-        scanf("%s", &fechaDesde);
+        do
+        {
+            printf("Ingrese la fecha de inicio (DD-MM-YYYY): ");
+            fflush(stdin);
+            scanf("%s", fechaDesde);
+
+            fechaValida = validarFecha(fechaDesde);
+            if (!fechaValida)
+            {
+                printf("Fecha invalida. Intente nuevamente.\n");
+            }
+        }
+        while (!fechaValida);
+
         system("cls");
         mostrarPacienteYIngresosPorFecha(raiz,fechaDesde);
         break;
     default:
-        printf("Opción de filtrado no válida.\n");
+        printf("Opciï¿½n de filtrado no vï¿½lida.\n");
     }
 }
 
-// Función para mostrar los ingresos de un paciente
+// Funcion para mostrar los ingresos de un paciente
 void mostrarIngresos(IngresoLaboratorio *ingresos)
 {
     IngresoLaboratorio *actual = ingresos;
@@ -803,13 +1202,14 @@ void mostrarIngresos(IngresoLaboratorio *ingresos)
             printf("Numero de Ingreso: %d\n", actual->NroIngreso);
             printf("Fecha de Ingreso: %s\n", actual->FechaIngreso);
             printf("Fecha de Retiro: %s\n", actual->FechaRetiro);
-            printf("Matricula Profesional: %d\n\n", actual->MatriculaProfesional);
+            printf("Matricula Profesional: %d\n", actual->MatriculaProfesional);
+            printf("==========================================\n");
         }
         actual = actual->siguiente;
     }
 }
 
-// Función para mostrar todos los pacientes y sus ingresos
+// Funcion para mostrar todos los pacientes y sus ingresos
 void mostrarTodosLosPacientesYIngresos(Paciente *raiz)
 {
     NodoLista *listaOrdenada = NULL;
@@ -827,7 +1227,7 @@ void mostrarTodosLosPacientesYIngresos(Paciente *raiz)
 }
 
 ///------------------------- FUNCIONES ARCHIVO -------------------------
-// Función para guardar los datos de pacientes e ingresos en un archivo
+// Funcion para guardar los datos de pacientes e ingresos en un archivo
 void guardarDatosEnArchivo(Paciente *raiz)
 {
     FILE *archivo = fopen("datos.txt", "w");
@@ -841,7 +1241,7 @@ void guardarDatosEnArchivo(Paciente *raiz)
     fclose(archivo);
 }
 
-// Función para guardar los datos de pacientes en un archivo
+// Funcion para guardar los datos de pacientes en un archivo
 void guardarPacientesEnArchivo(FILE *archivo, Paciente *raiz)
 {
     if (raiz == NULL)
@@ -859,7 +1259,7 @@ void guardarPacientesEnArchivo(FILE *archivo, Paciente *raiz)
     guardarPacientesEnArchivo(archivo, raiz->derecha);
 }
 
-// Función para guardar los datos de ingresos en un archivo
+// Funcion para guardar los datos de ingresos en un archivo
 void guardarIngresosEnArchivo(FILE *archivo, IngresoLaboratorio *ingresos)
 {
     IngresoLaboratorio *actual = ingresos;
@@ -869,7 +1269,7 @@ void guardarIngresosEnArchivo(FILE *archivo, IngresoLaboratorio *ingresos)
         {
             fprintf(archivo, "Ingreso,%d,%s,%s,%d,%d\n", actual->NroIngreso, actual->FechaIngreso, actual->FechaRetiro, actual->DniPaciente, actual->MatriculaProfesional);
 
-            // Guardar las prácticas asociadas a este ingreso
+            // Guardar las prï¿½cticas asociadas a este ingreso
             Practica *practicaActual = actual->practicas;
             while (practicaActual != NULL)
             {
@@ -881,7 +1281,7 @@ void guardarIngresosEnArchivo(FILE *archivo, IngresoLaboratorio *ingresos)
     }
 }
 
-// Función mejorada para cargar los datos desde un archivo
+// Funcion mejorada para cargar los datos desde un archivo
 void cargarDatosDesdeArchivoMejorado(Paciente **raiz)
 {
     FILE *archivo = fopen("datos.txt", "r");
@@ -891,7 +1291,7 @@ void cargarDatosDesdeArchivoMejorado(Paciente **raiz)
     }
 
     char linea[200];
-    IngresoLaboratorio *ingresoTemp = NULL; // Variable temporal para almacenar el último ingreso cargado
+    IngresoLaboratorio *ingresoTemp = NULL; // Variable temporal para almacenar el ï¿½ltimo ingreso cargado
 
     while (fgets(linea, sizeof(linea), archivo) != NULL)
     {
@@ -926,15 +1326,15 @@ void cargarDatosDesdeArchivoMejorado(Paciente **raiz)
             Paciente *paciente = buscarPaciente(*raiz, dniPaciente);
             if (paciente != NULL && fechaIngreso && fechaRetiro)
             {
-                // Usa el valor real de la matrícula profesional leído del archivo
+                // Usa el valor real de la matrï¿½cula profesional leï¿½do del archivo
                 IngresoLaboratorio *nuevoIngreso = crearIngreso(nroIngreso, fechaIngreso, fechaRetiro, dniPaciente, matriculaProfesional);
                 agregarIngreso(paciente, nuevoIngreso);
-                ingresoTemp = nuevoIngreso; // Guardar referencia al ingreso recién creado
+                ingresoTemp = nuevoIngreso; // Guardar referencia al ingreso reciï¿½n creado
             }
         }
         else if (strcmp(token, "Practica") == 0 && ingresoTemp != NULL)
         {
-            // Es una práctica, asociarla al último ingreso cargado
+            // Es una prï¿½ctica, asociarla al ï¿½ltimo ingreso cargado
             int nroIngreso = atoi(strtok(NULL, ","));
             int nroPractica = atoi(strtok(NULL, ","));
             char *resultado = strtok(NULL, "\n");
@@ -949,7 +1349,7 @@ void cargarDatosDesdeArchivoMejorado(Paciente **raiz)
 }
 
 ///------------------------- FUNCIONES PRACTICA POR INGREGO -------------------------
-// Función para crear una nueva Practica
+// Funcion para crear una nueva Practica
 Practica *crearPractica(int NroPractica, char *Resultado)
 {
     Practica *nuevaPractica = (Practica *)malloc(sizeof(Practica));
@@ -969,7 +1369,7 @@ void altaPractica(IngresoLaboratorio *ingreso, int NroPractica, char *Resultado)
     ingreso->practicas = nuevaPractica;
 }
 
-// Función para buscar una Practica específica por numero
+// Funcion para buscar una Practica especï¿½fica por numero
 Practica *buscarPractica(IngresoLaboratorio *ingreso, int NroPractica)
 {
     Practica *actual = ingreso->practicas;
@@ -1034,7 +1434,7 @@ void listarPracticasPorPrefijoFor(Practica *practicas, const char *prefijo)
     {
         if (strncmp(p->Resultado, prefijo, strlen(prefijo)) == 0)
         {
-            printf("Practica N° %d, Resultado: %s\n", p->NroPractica, p->Resultado);
+            printf("Practica Nï¿½ %d, Resultado: %s\n", p->NroPractica, p->Resultado);
         }
     }
 }
@@ -1043,7 +1443,7 @@ void buscarPracticasConPrefijo(Paciente *raiz, const char *prefijo)
 {
     if (raiz == NULL) return;
 
-    // Buscar en subárbol izquierdo
+    // Buscar en subï¿½rbol izquierdo
     buscarPracticasConPrefijo(raiz->izquierda, prefijo);
 
     // Listar Practicas del paciente actual que comiencen con el prefijo
@@ -1060,124 +1460,332 @@ void buscarPracticasConPrefijo(Paciente *raiz, const char *prefijo)
         }
     }
 
-    // Buscar en subárbol derecho
+    // Buscar en subï¿½rbol derecho
     buscarPracticasConPrefijo(raiz->derecha, prefijo);
 }
 
 ///------------------------- FUNCIONES PRACTICA POR INGREGO MENU-------------------------
 void agregarPracticaMenu(Paciente *raiz)
 {
-    int dniPaciente, nroIngreso, nroPractica;
-    char resultado[256]; // Asumiendo que el resultado es una cadena de texto
+    char dniPaciente[10], nroIngreso[11], nroPractica[11], resultado[256]; // Asumiendo que el resultado es una cadena de texto
+    int dniValido = 0, nroIngresoValido = 0, nroPracticaValido = 0;
 
-    printf("Ingrese el DNI del paciente: ");
-    scanf("%d", &dniPaciente);
+    // Validar DNI del paciente
+    do
+    {
+        printf("Ingrese el DNI del paciente: ");
+        fflush(stdin);
+        scanf("%s", dniPaciente);
 
-    Paciente *paciente = buscarPaciente(raiz, dniPaciente);
+        dniValido = 1;
+        if(strlen(dniPaciente) != 8)
+        {
+            dniValido = 0;
+        }
+        else
+        {
+            for(int i = 0; i < 8; i++)
+            {
+                if(!isdigit(dniPaciente[i]))
+                {
+                    dniValido = 0;
+                    break;
+                }
+            }
+        }
+
+        if(!dniValido)
+        {
+            printf("Ingrese un DNI valido de 8 digitos.\n");
+        }
+    }
+    while (!dniValido);
+
+    Paciente *paciente = buscarPaciente(raiz, atoi(dniPaciente));
 
     if (paciente != NULL)
     {
-        printf("Ingrese el numero de ingreso: ");
-        scanf("%d", &nroIngreso);
-        IngresoLaboratorio *ingreso = buscarIngreso(paciente, nroIngreso);
+        // Validar nÃºmero de ingreso
+        do
+        {
+            printf("Ingrese el numero de ingreso: ");
+            fflush(stdin);
+            scanf("%s", nroIngreso);
+
+            nroIngresoValido = 1;
+            for(int i = 0; i < strlen(nroIngreso); i++)
+            {
+                if(!isdigit(nroIngreso[i]))
+                {
+                    nroIngresoValido = 0;
+                    break;
+                }
+            }
+
+            if(!nroIngresoValido)
+            {
+                printf("Ingrese un numero de ingreso valido.\n");
+            }
+        }
+        while (!nroIngresoValido);
+
+        IngresoLaboratorio *ingreso = buscarIngreso(paciente, atoi(nroIngreso));
 
         if (ingreso != NULL)
         {
-            printf("Ingrese el numero de la Practica: ");
-            fflush(stdin);
-            scanf("%d", &nroPractica);
+            // Validar nÃºmero de prÃ¡ctica
+            do
+            {
+                printf("Ingrese el numero de la Practica: ");
+                fflush(stdin);
+                scanf("%s", nroPractica);
+
+                nroPracticaValido = 1;
+                for(int i = 0; i < strlen(nroPractica); i++)
+                {
+                    if(!isdigit(nroPractica[i]))
+                    {
+                        nroPracticaValido = 0;
+                        break;
+                    }
+                }
+
+                if(!nroPracticaValido)
+                {
+                    printf("Ingrese un numero de practica valido.\n");
+                }
+            }
+            while (!nroPracticaValido);
 
             printf("Ingrese el resultado de la Practica: ");
             fflush(stdin);
-            gets(&resultado);
+            gets(resultado);
 
-            altaPractica(ingreso, nroPractica, resultado);
+            altaPractica(ingreso, atoi(nroPractica), resultado);
             printf("Practica agregada correctamente.\n");
         }
         else
         {
-            printf("No se encontro el ingreso con el numero %d.\n", nroIngreso);
+            printf("No se encontro el ingreso con el numero %s.\n", nroIngreso);
         }
     }
     else
     {
-        printf("No se encontro un paciente con DNI %d.\n", dniPaciente);
+        printf("No se encontro un paciente con DNI %s.\n", dniPaciente);
     }
 }
 
 void modificarPracticaMenu(Paciente *raiz)
 {
-    int dniPaciente, nroIngreso, nroPractica;
-    char nuevoResultado[50]; // Asumiendo que el resultado es una cadena de texto
+    char dniPaciente[10], nroIngreso[11], nroPractica[11], nuevoResultado[50]; // Asumiendo que el resultado es una cadena de texto
+    int dniValido = 0, nroIngresoValido = 0, nroPracticaValido = 0;
 
-    printf("Ingrese el DNI del paciente: ");
-    scanf("%d", &dniPaciente);
+    do
+    {
+        printf("Ingrese el DNI del paciente: ");
+        fflush(stdin);
+        scanf("%s", dniPaciente);
 
+        dniValido = 1;
+        if(strlen(dniPaciente) != 8)
+        {
+            dniValido = 0;
+        }
+        else
+        {
+            for(int i = 0; i < 8; i++)
+            {
+                if(!isdigit(dniPaciente[i]))
+                {
+                    dniValido = 0;
+                    break;
+                }
+            }
+        }
 
-    Paciente *paciente = buscarPaciente(raiz, dniPaciente);
+        if(!dniValido)
+        {
+            printf("Ingrese un DNI valido de 8 digitos.\n");
+        }
+    }
+    while (!dniValido);
+
+    Paciente *paciente = buscarPaciente(raiz, atoi(dniPaciente));
 
     if (paciente != NULL)
     {
-        printf("Ingrese el numero de ingreso: ");
-        scanf("%d", &nroIngreso);
-        IngresoLaboratorio *ingreso = buscarIngreso(paciente, nroIngreso);
+        do
+        {
+            printf("Ingrese el numero de ingreso: ");
+            fflush(stdin);
+            scanf("%s", nroIngreso);
+
+            nroIngresoValido = 1;
+            for(int i = 0; i < strlen(nroIngreso); i++)
+            {
+                if(!isdigit(nroIngreso[i]))
+                {
+                    nroIngresoValido = 0;
+                    break;
+                }
+            }
+
+            if(!nroIngresoValido)
+            {
+                printf("Ingrese un numero de ingreso valido.\n");
+            }
+        }
+        while (!nroIngresoValido);
+
+        IngresoLaboratorio *ingreso = buscarIngreso(paciente, atoi(nroIngreso));
 
         if (ingreso != NULL)
         {
-            printf("Ingrese el numero de la Practica a modificar: ");
-            fflush(stdin);
-            scanf("%d", &nroPractica);
+            // Validar nÃºmero de prÃ¡ctica
+            do
+            {
+                printf("Ingrese el numero de la Practica a modificar: ");
+                fflush(stdin);
+                scanf("%s", nroPractica);
+
+                nroPracticaValido = 1;
+                for(int i = 0; i < strlen(nroPractica); i++)
+                {
+                    if(!isdigit(nroPractica[i]))
+                    {
+                        nroPracticaValido = 0;
+                        break;
+                    }
+                }
+
+                if(!nroPracticaValido)
+                {
+                    printf("Ingrese un numero de practica valido.\n");
+                }
+            }
+            while (!nroPracticaValido);
 
             printf("Ingrese el nuevo resultado de la Practica: ");
             fflush(stdin);
-            gets(&nuevoResultado);
+            gets(nuevoResultado);
 
-
-            modificacionPractica(ingreso, nroPractica, nuevoResultado);
+            modificacionPractica(ingreso, atoi(nroPractica), nuevoResultado);
             printf("Practica modificada correctamente.\n");
         }
         else
         {
-            printf("No se encontro el ingreso con el numero %d.\n", nroIngreso);
+            printf("No se encontro el ingreso con el numero %s.\n", nroIngreso);
         }
     }
     else
     {
-        printf("No se encontro un paciente con DNI %d.\n", dniPaciente);
+        printf("No se encontro un paciente con DNI %s.\n", dniPaciente);
     }
 }
 
 void eliminarPracticaMenu(Paciente *raiz)
 {
-    int dniPaciente, nroIngreso, nroPractica;
+    char dniPaciente[10], nroIngreso[11], nroPractica[11];
+    int dniValido = 0, nroIngresoValido = 0, nroPracticaValido = 0;
 
-    printf("Ingrese el DNI del paciente: ");
-    scanf("%d", &dniPaciente);
+    // Validar DNI del paciente
+    do
+    {
+        printf("Ingrese el DNI del paciente: ");
+        fflush(stdin);
+        scanf("%s", dniPaciente);
 
-    Paciente *paciente = buscarPaciente(raiz, dniPaciente);
+        dniValido = 1;
+        if(strlen(dniPaciente) != 8)
+        {
+            dniValido = 0;
+        }
+        else
+        {
+            for(int i = 0; i < 8; i++)
+            {
+                if(!isdigit(dniPaciente[i]))
+                {
+                    dniValido = 0;
+                    break;
+                }
+            }
+        }
+
+        if(!dniValido)
+        {
+            printf("Ingrese un DNI valido de 8 digitos.\n");
+        }
+    }
+    while (!dniValido);
+
+    Paciente *paciente = buscarPaciente(raiz, atoi(dniPaciente));
 
     if (paciente != NULL)
     {
-        printf("Ingrese el numero de ingreso: ");
-        scanf("%d", &nroIngreso);
-        IngresoLaboratorio *ingreso = buscarIngreso(paciente, nroIngreso);
+        // Validar nÃºmero de ingreso
+        do
+        {
+            printf("Ingrese el numero de ingreso: ");
+            fflush(stdin);
+            scanf("%s", nroIngreso);
+
+            nroIngresoValido = 1;
+            for(int i = 0; i < strlen(nroIngreso); i++)
+            {
+                if(!isdigit(nroIngreso[i]))
+                {
+                    nroIngresoValido = 0;
+                    break;
+                }
+            }
+
+            if(!nroIngresoValido)
+            {
+                printf("Ingrese un numero de ingreso valido.\n");
+            }
+        }
+        while (!nroIngresoValido);
+
+        IngresoLaboratorio *ingreso = buscarIngreso(paciente, atoi(nroIngreso));
 
         if (ingreso != NULL)
         {
-            printf("Ingrese el numero de la Practica a eliminar: ");
-            scanf("%d", &nroPractica);
+            // Validar nÃºmero de prÃ¡ctica
+            do
+            {
+                printf("Ingrese el numero de la Practica a eliminar: ");
+                fflush(stdin);
+                scanf("%s", nroPractica);
 
-            bajaPractica(ingreso, nroPractica);
+                nroPracticaValido = 1;
+                for(int i = 0; i < strlen(nroPractica); i++)
+                {
+                    if(!isdigit(nroPractica[i]))
+                    {
+                        nroPracticaValido = 0;
+                        break;
+                    }
+                }
+
+                if(!nroPracticaValido)
+                {
+                    printf("Ingrese un numero de practica valido.\n");
+                }
+            }
+            while (!nroPracticaValido);
+
+            bajaPractica(ingreso, atoi(nroPractica));
             printf("Practica eliminada correctamente, si no tenia resultados asociados.\n");
         }
         else
         {
-            printf("No se encontro el ingreso con el numero %d.\n", nroIngreso);
+            printf("No se encontro el ingreso con el numero %s.\n", nroIngreso);
         }
     }
     else
     {
-        printf("No se encontro un paciente con DNI %d.\n", dniPaciente);
+        printf("No se encontro un paciente con DNI %s.\n", dniPaciente);
     }
 }
 
@@ -1185,17 +1793,14 @@ void buscarPracticasMenu(Paciente *raiz)
 {
     char prefijo[256];
     printf("Ingrese el prefijo para filtrar las Practicas (por ejemplo 'he'): ");
-    scanf("%255s", prefijo);  // Usar %255s para prevenir desbordamiento de búfer
+    scanf("%255s", prefijo);  // Usar %255s para prevenir desbordamiento de bï¿½fer
     buscarPracticasConPrefijo(raiz, prefijo);
 }
 
 ///AUX
 int validarFecha(char fecha[])
 {
-    int fechaValida = 1;
-    int exitoConversionFecha = 0;
-    int longitudFecha = strlen(fecha);
-    int i = 0;
+    int fechaValida = 1, exitoConversionFecha = 0, longitudFecha = strlen(fecha), i = 0;
 
     if (longitudFecha == 0 || longitudFecha < 6 || longitudFecha > 11 || fecha[0] == ' ')
     {
@@ -1235,10 +1840,7 @@ int validarFecha(char fecha[])
 
 int convertirFecha(char fecha[])
 {
-    int fechaValida = 0;
-    int dia = 0;
-    int mes = 0;
-    int year = 0;
+    int fechaValida = 0, dia = 0, mes = 0, year = 0;
 
     if (sscanf(fecha, "%d/%d/%d", &dia, &mes, &year) == 3 || sscanf(fecha, "%d-%d-%d", &dia, &mes, &year) == 3)
     {
@@ -1250,4 +1852,3 @@ int convertirFecha(char fecha[])
 
     return fechaValida;
 }
-
