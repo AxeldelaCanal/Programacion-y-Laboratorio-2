@@ -1,6 +1,6 @@
 Paciente,13616965,de la Canal Carlos,65,Coronel Suarez 3056,2235704438
-Ingreso,1,22/11/2023,23/11/2023,13616965,123
+Ingreso,1,23/11/2023,24/11/2023,13616965,1234
 Practica,1,1,Covid Negativo
 Paciente,16836903,Cebrian Alicia,60,Alvarado 7770,2235559189
-Ingreso,2,20/11/2023,22/11/2023,16836903,1234
-Practica,2,1,Gripe Negativa
+Ingreso,2,22/11/2023,24/11/2023,16836903,123
+Practica,2,1,Gripe A Negativo

@@ -36,27 +36,33 @@ Paciente *buscarPaciente(Paciente *raiz, int dni)
     }
 }
 
-// Funcion para buscar un paciente por numero de ingreso
-Paciente *buscarPacientePorNumeroIngreso(Paciente *raiz, int numeroIngreso)
+// Funcion para buscar un paciente por numero de ingreso NUEVA
+Paciente *buscarPacientePorNumeroIngreso(Paciente* raiz, int numeroIngreso)
 {
-    if (raiz == NULL)
+    if(raiz == NULL)
     {
-        return NULL; // No se encontro el paciente
+        return NULL;
     }
 
-    // Recursivamente, busca en el lado izquierdo y derecho del �rbol
-    if (numeroIngreso == raiz->ingresos->NroIngreso)
+    IngresoLaboratorio* actual = raiz->ingresos;
+    while(actual != NULL)
     {
-        return raiz; // Se encontro el paciente con el numero de ingreso
+        if(actual->NroIngreso == numeroIngreso)
+        {
+            return raiz;
+        }
+        actual = actual->siguiente;
     }
-    else if (numeroIngreso > raiz->ingresos->NroIngreso)
+
+    Paciente* encontradoIzquierda = buscarPacientePorNumeroIngreso(raiz->izquierda, numeroIngreso);
+    if(encontradoIzquierda != NULL)
     {
-        return buscarPacientePorNumeroIngreso(raiz->izquierda, numeroIngreso);
+        return encontradoIzquierda;
     }
-    else
-    {
-        return buscarPacientePorNumeroIngreso(raiz->derecha, numeroIngreso);
-    }
+
+    Paciente* encontradoDerecha = buscarPacientePorNumeroIngreso(raiz->derecha, numeroIngreso);
+    return encontradoDerecha;
+
 }
 
 // Funcion para dar de alta un paciente
@@ -288,7 +294,7 @@ void bajaIngreso(Paciente *raiz, int dniPaciente, int nroIngreso)
     }
 }
 
-// Funcion auxiliar para realizar la b�squeda
+// Funcion auxiliar para realizar la busqueda
 int ingresoEncontrado = 0;
 void buscarYVerificacionIngreso(Paciente *raiz, int nroIngreso, const char *fechaIngreso)
 {
@@ -297,7 +303,7 @@ void buscarYVerificacionIngreso(Paciente *raiz, int nroIngreso, const char *fech
         return;
     }
 
-    // B�squeda en el sub�rbol izquierdo
+    // Busqueda en el subarbol izquierdo
     buscarYVerificacionIngreso(raiz->izquierda, nroIngreso, fechaIngreso);
 
     if (!raiz->Eliminado)
@@ -331,7 +337,7 @@ void buscarYVerificacionIngreso(Paciente *raiz, int nroIngreso, const char *fech
         }
     }
 
-    // B�squeda en el sub�rbol derecho
+    // Busqueda en el subarbol derecho
     buscarYVerificacionIngreso(raiz->derecha, nroIngreso, fechaIngreso);
 }
 
@@ -968,7 +974,7 @@ void mostrarIngresosEnRangoYDatosPacienteMenu(Paciente *raiz, char *fechaDesde, 
         {
             if (!actual->Eliminado)
             {
-                // Verificar si la fecha de ingreso est� dentro del rango
+                // Verificar si la fecha de ingreso esta dentro del rango
                 if (strcmp(actual->FechaIngreso, fechaDesde) >= 0 && strcmp(actual->FechaIngreso, fechaHasta) <= 0)
                 {
                     // Mostrar los datos del paciente e ingreso
@@ -1024,7 +1030,7 @@ void mostrarPacienteYIngresos(Paciente *raiz, int dniPaciente)
     }
     else
     {
-        printf("El paciente con DNI %d no existe o est� eliminado.\n", dniPaciente);
+        printf("El paciente con DNI %d no existe o esta eliminado.\n", dniPaciente);
     }
 }
 
@@ -1045,7 +1051,7 @@ void mostrarPacienteYIngresosPorNumeroIngreso(Paciente *raiz, int numeroIngreso)
     }
     else
     {
-        printf("No se encontro un paciente con ingreso numero %d o est� eliminado.\n", numeroIngreso);
+        printf("No se encontro un paciente con ingreso numero %d o esta eliminado.\n", numeroIngreso);
     }
 }
 
@@ -1064,7 +1070,7 @@ void mostrarPacienteYIngresosPorFecha(Paciente *raiz, char *fechaDesde)
         {
             if (!actual->Eliminado)
             {
-                // Verificar si la fecha de ingreso est� dentro del rango
+                // Verificar si la fecha de ingreso esta dentro del rango
                 if (strcmp(actual->FechaIngreso, fechaDesde) == 0)
                 {
                     // Mostrar los datos del paciente e ingreso
@@ -1187,7 +1193,7 @@ void mostrarPacienteYIngresosConFiltrado(Paciente *raiz)
         mostrarPacienteYIngresosPorFecha(raiz,fechaDesde);
         break;
     default:
-        printf("Opci�n de filtrado no v�lida.\n");
+        printf("Opcion de filtrado no valida.\n");
     }
 }
 
@@ -1434,7 +1440,7 @@ void listarPracticasPorPrefijoFor(Practica *practicas, const char *prefijo)
     {
         if (strncmp(p->Resultado, prefijo, strlen(prefijo)) == 0)
         {
-            printf("Practica N� %d, Resultado: %s\n", p->NroPractica, p->Resultado);
+            printf("Practica N: %d, Resultado: %s\n", p->NroPractica, p->Resultado);
         }
     }
 }
@@ -1443,7 +1449,7 @@ void buscarPracticasConPrefijo(Paciente *raiz, const char *prefijo)
 {
     if (raiz == NULL) return;
 
-    // Buscar en sub�rbol izquierdo
+    // Buscar en subarbol izquierdo
     buscarPracticasConPrefijo(raiz->izquierda, prefijo);
 
     // Listar Practicas del paciente actual que comiencen con el prefijo
@@ -1460,7 +1466,7 @@ void buscarPracticasConPrefijo(Paciente *raiz, const char *prefijo)
         }
     }
 
-    // Buscar en sub�rbol derecho
+    // Buscar en subarbol derecho
     buscarPracticasConPrefijo(raiz->derecha, prefijo);
 }
 
@@ -1793,7 +1799,7 @@ void buscarPracticasMenu(Paciente *raiz)
 {
     char prefijo[256];
     printf("Ingrese el prefijo para filtrar las Practicas (por ejemplo 'he'): ");
-    scanf("%255s", prefijo);  // Usar %255s para prevenir desbordamiento de b�fer
+    scanf("%255s", prefijo);  // Usar %255s para prevenir desbordamiento de bufer
     buscarPracticasConPrefijo(raiz, prefijo);
 }
 

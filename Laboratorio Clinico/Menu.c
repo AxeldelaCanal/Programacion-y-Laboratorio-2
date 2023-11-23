@@ -63,7 +63,7 @@ void opcion1()
             centrarTextoAuto("6. Eliminar ingreso", fila++);
             centrarTextoAuto("7. Mostrar Paciente e Ingreso", fila++);
             centrarTextoAuto("8. Mostrar todos los Pacientes e Ingresos", fila++);
-            centrarTextoAuto("9. Filtrar ingresos por fecha", fila++);  // Nueva opci�n para filtrar por fecha
+            centrarTextoAuto("9. Filtrar ingresos por fecha", fila++);  // Nueva Opcion para filtrar por fecha
             centrarTextoAuto("10. Mostrar un Paciente", fila++); // Nueva opcion para mostrar un paciente.
             centrarTextoAuto("11. Todos los Ingresos por Paciente", fila++);
             centrarTextoAuto("12. Consultar un Ingreso", fila++); // Nueva funcion para mostrar un ingreso.
